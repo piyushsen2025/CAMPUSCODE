@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0d0f10">
+  <title>CampusCode — Hackathon Arena</title>
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/improvements.css">
+  <link rel="stylesheet" href="css/landing-overrides.css">
+</head>
+<body>
+  <div class="campus-landing" id="app">
+    <header class="landing-nav" id="landingNav">
+      <button type="button" class="landing-logo" data-action="top" aria-label="CampusCode home">
+        <span class="landing-logo-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span><strong>CAMPUSCODE</strong><small>HACKATHON ARENA</small></span>
+      </button>
+      <nav class="landing-links" id="landingLinks">
+        <button type="button" data-scroll="about">ABOUT</button>
+        <button type="button" data-scroll="how">HOW IT WORKS</button>
+        <button type="button" data-scroll="hackathons">HACKATHONS</button>
+        <button type="button" data-scroll="community">COMMUNITY</button>
+        <button type="button" class="landing-join mobile-join" data-route="register">JOIN CAMPUSCODE<span>↗</span></button>
+      </nav>
+      <div class="landing-nav-actions">
+        <button type="button" class="landing-login" data-route="login">LOGIN</button>
+        <button type="button" class="landing-join" data-route="register">JOIN CAMPUSCODE<span>↗</span></button>
+      </div>
+      <button type="button" class="landing-menu" id="landingMenu" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </header>
+
+    <section class="landing-hero">
+      <div class="landing-hero-grid"></div><div class="hero-glow glow-one"></div><div class="hero-glow glow-two"></div><div class="hero-glow glow-three"></div>
+      <div class="hero-network" aria-hidden="true"><svg viewBox="0 0 1400 800" preserveAspectRatio="none"><path d="M0 600 C180 450 250 620 420 430 S680 80 900 270 S1150 500 1400 180"></path><path d="M80 130 C280 300 380 80 570 270 S800 620 1080 500 S1250 400 1400 620"></path><path d="M250 800 C400 600 570 650 720 460 S970 180 1160 80"></path><circle cx="420" cy="430" r="5"></circle><circle cx="900" cy="270" r="5"></circle><circle cx="1080" cy="500" r="5"></circle><circle cx="570" cy="270" r="5"></circle><circle cx="1160" cy="80" r="5"></circle></svg></div>
+      <div class="hero-top-line"><span><i></i>THE DIGITAL HOME FOR STUDENT INNOVATION</span><span>CHENNAI · INDIA</span></div>
+      <div class="hero-content"><div class="hero-label">CAMPUSCODE / 001</div><h1>BUILD<br><span>COMPETE</span><br>SHIP.</h1><div class="hero-description"><p>A digital arena for students<br>who don't just have ideas.<br>They build them.</p><button type="button" class="hero-explore" data-scroll="hackathons"><span>EXPLORE HACKATHONS</span><b>↗</b></button></div></div>
+      <div class="hero-bottom"><span>SCROLL TO EXPLORE</span><div class="hero-scroll-line"><i></i></div><span>01 / 05</span></div>
+    </section>
+
+    <section class="landing-marquee" aria-hidden="true"><div class="marquee-track"><span>IDEAS</span><b>✦</b><span>PEOPLE</span><b>✦</b><span>PRODUCTS</span><b>✦</b><span>INNOVATION</span><b>✦</b><span>COMMUNITY</span><b>✦</b><span>IDEAS</span><b>✦</b><span>PEOPLE</span><b>✦</b><span>PRODUCTS</span><b>✦</b><span>INNOVATION</span><b>✦</b></div></section>
+
+    <section id="about" class="landing-about"><div class="section-number">01</div><div class="about-content"><div class="small-label"><i></i>WHAT IS CAMPUSCODE?</div><h2>WHERE<br>STUDENTS<br><em>BUILD.</em></h2><p>CampusCode brings students, teams, organizers and hackathons into one connected ecosystem.</p></div><div class="about-visual" aria-hidden="true"><div class="about-ring ring-a"></div><div class="about-ring ring-b"></div><div class="about-ring ring-c"></div><div class="about-core">CC</div><span class="about-node node-1">01</span><span class="about-node node-2">02</span><span class="about-node node-3">03</span></div></section>
+
+    <section id="experience" class="landing-video experience-inline"><div class="video-grid"></div><div class="video-top"><span>02 — EXPERIENCE</span><span>00:30</span></div><div class="video-center"><small>THE CAMPUSCODE EXPERIENCE</small><strong>BUILD<br>TOGETHER.</strong></div><div class="experience-film" id="experienceFilm" role="button" tabindex="0" aria-label="Play the What is CampusCode film"><video id="experienceVideo" src="assets/videos/what-is-campuscode.mp4" loop playsinline muted preload="metadata"></video><span class="experience-play-badge" id="experiencePlayBadge">▶</span><span class="experience-hint" id="experienceHint">TAP TO PLAY</span></div><div class="video-bottom"><span>WATCH THE STORY</span><button type="button" class="video-auto-note" id="openVideoModal">EXPAND CINEMATIC VIEW ↗</button></div></section>
+
+    <section id="how" class="landing-how"><div class="section-heading"><div><span>03</span><h2>HOW IT WORKS</h2></div><p>FROM IDEA<br>TO IMPACT.</p></div><div class="steps-grid">
+      <button type="button" class="step-card" data-step="discover"><div class="step-number">01</div><div class="step-line"></div><h3>DISCOVER</h3><p>Find a challenge that makes you want to build.</p><span class="step-arrow">↗</span></button>
+      <button type="button" class="step-card" data-step="team"><div class="step-number">02</div><div class="step-line"></div><h3>TEAM UP</h3><p>Find people who share your ambition.</p><span class="step-arrow">↗</span></button>
+      <button type="button" class="step-card" data-step="build"><div class="step-number">03</div><div class="step-line"></div><h3>BUILD</h3><p>Turn your idea into something people can use.</p><span class="step-arrow">↗</span></button>
+      <button type="button" class="step-card" data-step="ship"><div class="step-number">04</div><div class="step-line"></div><h3>SHIP</h3><p>Submit your work and take it to the arena.</p><span class="step-arrow">↗</span></button>
+    </div></section>
+
+    <section id="hackathons" class="landing-hackathons"><div class="section-heading"><div><span>04</span><h2>ENTER THE ARENA</h2></div><button type="button" data-route="student">VIEW ALL ↗</button></div><div class="hackathon-list" id="hackathonList">
+      <article class="hackathon-row" tabindex="0" role="button" data-hackathon="01"><div class="hack-number">01</div><div class="hack-title"><small>ARTIFICIAL INTELLIGENCE</small><h3>AI INNOVATION</h3></div><p>Build intelligent solutions for problems that matter.</p><div class="hack-status"><i class="active"></i>LIVE</div><span class="hack-arrow">↗</span></article>
+      <article class="hackathon-row" tabindex="0" role="button" data-hackathon="02"><div class="hack-number">02</div><div class="hack-title"><small>WEB DEVELOPMENT</small><h3>FUTURE WEB</h3></div><p>Design and ship the next generation of digital experiences.</p><div class="hack-status"><i></i>OPEN</div><span class="hack-arrow">↗</span></article>
+      <article class="hackathon-row" tabindex="0" role="button" data-hackathon="03"><div class="hack-number">03</div><div class="hack-title"><small>SMART TECHNOLOGY</small><h3>CAMPUS TECH</h3></div><p>Create technology that makes student life better.</p><div class="hack-status"><i></i>UPCOMING</div><span class="hack-arrow">↗</span></article>
+    </div></section>
+
+    <section class="landing-statement"><div class="statement-watermark">CAMPUSCODE</div><div class="statement-content"><span>05 — THE MISSION</span><h2>GREAT<br>IDEAS<br><em>NEED BUILDERS.</em></h2><p>Your university is full of people with ideas. CampusCode gives those ideas somewhere to go.</p></div></section>
+    <section id="community" class="landing-community"><div class="community-left"><span>THE NETWORK</span><h2>FIND<br>YOUR<br><em>PEOPLE.</em></h2></div><div class="community-right"><div class="community-orbit" aria-hidden="true"><span></span><span></span><span></span><span></span><strong>CC</strong></div><p>Build with developers.<br>Think with designers.<br>Compete with builders.</p></div></section>
+    <section class="landing-cta"><div class="cta-grid"></div><div class="cta-content"><small>READY?</small><h2>YOUR NEXT<br><span>PROJECT</span><br>STARTS HERE.</h2><button type="button" data-route="register">JOIN CAMPUSCODE<span>↗</span></button></div><div class="cta-orb"></div></section>
+
+    <footer class="landing-footer"><div class="footer-main"><div class="footer-brand"><div class="footer-logo"><span class="footer-mark" aria-hidden="true"><span></span><span></span><span></span></span><span><strong>CAMPUSCODE</strong><small>HACKATHON ARENA</small></span></div><p>The student hackathon arena.<br>You build the idea,<br>we run the competition.</p></div>
+      <div class="footer-column"><h4>PRODUCT</h4><a href="#about" data-scroll="about">About</a><a href="#hackathons" data-scroll="hackathons">Hackathons</a><a href="#how" data-scroll="how">How it works</a><a href="#community" data-scroll="community">Community</a></div>
+      <div class="footer-column"><h4>BUILDERS</h4><button type="button" data-route="student">Students</button><button type="button" data-route="student">Teams</button><button type="button" data-route="organizer">Organizers</button><button type="button" data-route="student">Developers</button></div>
+      <div class="footer-column"><h4>GUIDES</h4><a href="#about" data-toast="Official Hackathon Rules Loaded">Hackathon Rules</a><a href="#about" data-toast="FAQ Section">FAQ</a><a href="#about" data-toast="Support channel online 24/7">Support</a><button type="button" data-route="verify/CC-2026-WIN">Verify Certificate</button></div>
+    </div><div class="footer-status"><div><i class="live-pulse-dot"></i> ALL SYSTEMS OPERATIONAL</div><a href="#terms" data-toast="CampusCode Terms & Conditions">TERMS</a><a href="#privacy" data-toast="CampusCode Privacy Policy">PRIVACY</a><a href="#contact" data-toast="hello@campuscode.co.in">CONTACT</a></div><div class="footer-watermark">CampusCode</div><div class="footer-bottom"><span>© 2026 CAMPUSCODE</span><span>LEARN · BUILD · COMPETE · SHIP</span><span>CHENNAI · INDIA</span></div></footer>
+  </div>
+
+  <div class="arena-modal-overlay" id="arenaModal" hidden><div class="arena-modal-card" role="dialog" aria-modal="true" aria-labelledby="arenaModalTitle"><div class="arena-modal-head"><div><span id="arenaModalTag"></span><h2 id="arenaModalTitle"></h2></div><button type="button" class="arena-modal-close" data-close-modal aria-label="Close modal">✕</button></div><p id="arenaModalDesc"></p><div class="arena-modal-stats"><div><span>PRIZE POOL</span><strong id="arenaPrize"></strong></div><div><span>TEAMS</span><strong id="arenaTeams"></strong></div><div><span>TIMELINE</span><strong id="arenaDeadline"></strong></div></div><button type="button" class="hero-explore arena-enter" id="enterArena"><span>ENTER ARENA WORKSPACE</span><b>↗</b></button></div></div>
+  <div class="video-modal-overlay" id="videoModal" hidden><div class="video-modal-card" role="dialog" aria-modal="true" aria-label="CampusCode experience film"><button type="button" class="video-modal-close" data-close-video aria-label="Close video">✕</button><video src="assets/videos/what-is-campuscode.mp4" controls autoplay playsinline></video></div></div>
+  <!-- <div class="campus-toast" id="campusToast" role="status" aria-live="polite"></div> -->
+
+  <script src="js/app.js" defer></script>
+  <script src="js/landing.js" defer></script>
+</body>
+</html>

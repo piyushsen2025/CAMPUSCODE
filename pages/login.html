@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — CampusCode</title>
+  <link rel="icon" href="../assets/icons/favicon.svg">
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/improvements.css">
+  <link rel="stylesheet" href="../css/landing-overrides.css">
+</head>
+<body>
+  <div class="campus-login">
+    <div class="login-grid" aria-hidden="true"></div>
+    <div class="login-glow login-glow-one" aria-hidden="true"></div>
+    <div class="login-glow login-glow-two" aria-hidden="true"></div>
+    <div class="login-network" aria-hidden="true">
+      <svg viewBox="0 0 1400 800" preserveAspectRatio="none">
+        <path d="M0 600 C180 450 250 620 420 430 S680 80 900 270 S1150 500 1400 180"></path>
+        <path d="M80 130 C280 300 380 80 570 270 S800 620 1080 500 S1250 400 1400 620"></path>
+        <path d="M250 800 C400 600 570 650 720 460 S970 180 1160 80"></path>
+        <circle cx="420" cy="430" r="4"></circle><circle cx="900" cy="270" r="4"></circle>
+        <circle cx="1080" cy="500" r="4"></circle><circle cx="570" cy="270" r="4"></circle><circle cx="1160" cy="80" r="4"></circle>
+      </svg>
+    </div>
+
+    <header class="login-nav">
+      <a class="login-brand" href="../index.html" aria-label="CampusCode home">
+        <span class="login-brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="login-brand-text"><strong>CAMPUSCODE</strong><small>HACKATHON ARENA</small></span>
+      </a>
+      <a class="login-back" href="../index.html">← BACK TO HOME</a>
+    </header>
+
+    <main class="login-main">
+      <section class="login-intro">
+        <div class="login-status"><span></span>CAMPUSCODE / AUTHENTICATION</div>
+        <div class="login-intro-index"><span>ACCESS</span><span>01 / 02</span></div>
+        <h1>ENTER<br>THE<br><span>ARENA.</span></h1>
+        <p class="login-intro-description">Sign in to continue building, collaborating and competing with the CampusCode community.</p>
+        <div class="login-features"><div><strong>01</strong><span>BUILD</span></div><div><strong>02</strong><span>COMPETE</span></div><div><strong>03</strong><span>SHIP</span></div></div>
+        <div class="login-system-info"><span><i></i>AUTHENTICATION READY</span><span>SECURE ACCESS</span><span>2026</span></div>
+      </section>
+
+      <section class="login-card-wrapper">
+        <div class="login-card">
+          <div class="login-card-top">
+            <div>
+              <span class="login-card-label">EXISTING ACCOUNT</span>
+              <h2>LOGIN</h2>
+              <p>Access your CampusCode account.</p>
+            </div>
+            <div class="login-card-index">CC<br>01</div>
+          </div>
+          
+          <div class="login-divider"></div>
+
+          <form id="login-form" novalidate>
+            <div class="login-field">
+              <label for="login-email">EMAIL ADDRESS</label>
+              <div class="login-input-wrap">
+                <span class="login-input-icon">@</span>
+                <input id="login-email" type="email" name="email" value="" placeholder="you@example.com" autocomplete="email" required autofocus>
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label for="login-password">PASSWORD</label>
+              <div class="login-input-wrap">
+                <span class="login-input-icon">•</span>
+                <input id="login-password" type="password" name="password" value="" placeholder="Enter your password" autocomplete="current-password" required>
+                <button type="button" class="login-password-toggle" id="password-toggle" aria-label="Show password"><span>○</span>SHOW</button>
+              </div>
+            </div>
+
+            <div class="login-field">
+              <label for="login-captcha">CAPTCHA</label>
+              <div class="login-captcha-row">
+                <span class="login-captcha-img" id="captcha-text">39472</span>
+                <button type="button" class="login-password-toggle" id="captcha-refresh" aria-label="Generate new captcha">↻ NEW</button>
+              </div>
+              <div class="login-input-wrap" style="margin-top:8px">
+                <input id="login-captcha" type="text" placeholder="Enter the code above" autocomplete="off" maxlength="5" required>
+              </div>
+            </div>
+
+            <div class="login-message login-error" id="login-error" role="alert" hidden><span>!</span><p></p></div>
+            
+            <div class="login-ride-stage" id="login-ride-stage" aria-hidden="true">
+              <span class="login-ride-zzz">Zzz</span>
+              <span class="login-ride"><span class="login-ride-body"><i></i><i></i><i></i></span><span class="login-ride-wheel left"></span><span class="login-ride-wheel right"></span></span>
+              <span class="login-ride-barrier"></span>
+              <span class="login-ride-status">READY</span>
+              <span class="login-ride-traffic">● ● ●</span>
+            </div>
+
+            <button type="submit" class="login-submit" id="login-submit"><span>LOGIN </span><b>↗</b></button>
+
+            <div class="login-forgot-wrap">
+              <a href="forgot-password.html" class="login-forgot-link">FORGOT PASSWORD?</a>
+            </div>
+          </form>
+
+          <div class="login-card-footer">
+            <span>DON'T HAVE AN ACCOUNT?</span>
+            <a class="login-register" href="register.html">CREATE ACCOUNT <span>-</span></a>
+          </div>
+        </div>
+
+        <div class="login-card-subfooter">
+          <span>AUTH / 2026</span>
+          <span><i class="dot">●</i> SECURE LOGIN</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/login.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,3198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusCode — Student Arena</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+  
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f7f7f4;
+      --surface: #ffffff;
+      --surface-soft: #f0f0ec;
+      --text: #111111;
+      --text-muted: #858580;
+      --border: #deded8;
+      --border-light: #e5e5df;
+      --lime: #a8e62e;
+      --lime-dark: #82b91a;
+      --lime-soft: #ebf7cf;
+      --lime-text: #3f6212;
+      --purple: #7665ff;
+      --purple-dark: #4f46e5;
+      --sidebar-width: 250px;
+      --topbar-height: 64px;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+
+    
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    
+    .sidebar {
+      width: var(--sidebar-width);
+      background-color: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 20px 14px 16px 14px;
+      z-index: 50;
+    }
+
+    .sidebar-top {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Logo Mark */
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 2px 6px 12px 6px;
+      text-decoration: none;
+      color: var(--text);
+      border-bottom: 1px solid #f0f0ec;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .brand-mark span {
+      display: block;
+      width: 4px;
+      height: 19px;
+      border-radius: 1px;
+      transform: skewX(-17deg);
+    }
+
+    .brand-mark span:nth-child(1) { background-color: #111; }
+    .brand-mark span:nth-child(2) { background-color: var(--purple); }
+    .brand-mark span:nth-child(3) { background-color: var(--lime); }
+
+    .brand-text strong {
+      font-size: 13.5px;
+      font-weight: 900;
+      letter-spacing: -0.2px;
+      display: block;
+      line-height: 1.1;
+      color: #111;
+    }
+
+    .brand-text small {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .nav-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 1.8px;
+      color: var(--text-muted);
+      padding: 0 8px;
+      margin-bottom: -6px;
+      text-transform: uppercase;
+    }
+
+    /* Navigation Items */
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      list-style: none;
+    }
+
+    .nav-item-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: #4b5563;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+    }
+
+    .nav-item-btn:hover {
+      background: #f7f7f4;
+      color: #111;
+    }
+
+    .nav-item-btn .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-item-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2;
+      color: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Active Nav Item: Pure Lime Pill with Right Arrow/Dash */
+    .nav-item-btn.active {
+      background-color: var(--lime);
+      color: #111;
+      font-weight: 800;
+    }
+
+    .nav-item-btn .indicator {
+      display: none;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .nav-item-btn.active .indicator {
+      display: inline-block;
+    }
+
+    .ai-badge {
+      background: rgba(118, 101, 255, 0.15);
+      color: #6366f1;
+      font-family: 'DM Mono', monospace;
+      font-size: 8.5px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Sidebar Bottom: Account Section */
+    .sidebar-bottom {
+      border-top: 1px solid #f0f0ec;
+      padding-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .user-profile-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 6px;
+    }
+
+    .user-avatar-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #f0f0ec;
+      border: 1px solid var(--border);
+      color: #111;
+      font-weight: 800;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .user-info-text strong {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.2;
+    }
+
+    .user-info-text small {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 7px 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #222;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .logout-btn:hover {
+      background: #f7f7f4;
+      border-color: #cfcfc8;
+    }
+
+    
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: var(--topbar-height);
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 36px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .topbar-left {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar-breadcrumb {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 1.4px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .topbar-title {
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      color: #111;
+      margin-top: 1px;
+      text-transform: uppercase;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .bell-btn {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #333;
+    }
+
+    .bell-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      background: var(--lime);
+      color: #111;
+      font-size: 8.5px;
+      font-weight: 800;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 5px rgba(168, 230, 46, 0.7);
+    }
+
+    .refresh-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #111;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .refresh-btn:hover {
+      background: #f7f7f4;
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 6px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+    }
+
+    .topbar-user-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .topbar-user-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    /* ----------------------------------------------------
+       CONTENT CANVAS & TAB VIEWS
+       ---------------------------------------------------- */
+    .view-container {
+      padding: 36px 40px 60px 40px;
+      flex: 1;
+    }
+
+    .tab-view {
+      display: none;
+      animation: fadeIn 0.2s ease-out;
+    }
+
+    .tab-view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Standard View Hader */
+    .view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .view-sub-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--lime-dark);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .view-title {
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: -1.2px;
+      line-height: 1.05;
+      color: #111;
+      margin-bottom: 8px;
+    }
+
+    .view-desc {
+      color: #555;
+      font-size: 13.5px;
+      max-width: 680px;
+    }
+
+    .live-data-counter {
+      text-align: right;
+    }
+
+    .live-data-number {
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 1;
+      color: #111;
+    }
+
+    .live-data-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      display: block;
+      text-transform: uppercase;
+    }
+
+    
+    .filter-pills-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .filter-pill {
+      border: none;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      background: transparent;
+      color: #666;
+      transition: all 0.15s;
+    }
+
+    .filter-pill.active {
+      background: #111;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 1200px) {
+      .events-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 800px) {
+      .events-grid { grid-template-columns: 1fr; }
+    }
+
+    .event-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 520px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    /* Banner Components */
+    .card-banner {
+      width: 100%;
+      height: 100px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      position: relative;
+      overflow: hidden;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+    }
+
+    .card-banner-grid {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 14px 14px;
+      pointer-events: none;
+    }
+
+    .card-meta-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .card-hex-code {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: #858580;
+    }
+
+    .card-status-live {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--lime-dark);
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .circle-avatar-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .circle-avatar-badge.green {
+      background: #7cb342;
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(124, 179, 66, 0.3);
+    }
+
+    .circle-avatar-badge.dark {
+      background: #111;
+      color: #fff;
+    }
+
+    .event-card-heading {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.4px;
+      color: #111;
+      line-height: 1.2;
+    }
+
+    .card-sub-mode {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #111;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+      margin-bottom: 12px;
+    }
+
+    .event-card-desc {
+      font-size: 12px;
+      color: #4b5563;
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .card-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 12px 0;
+      border-top: 1px solid #f0f0ec;
+      border-bottom: 1px solid #f0f0ec;
+      margin-bottom: 16px;
+    }
+
+    .card-stat-col small {
+      display: block;
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      color: #888;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .card-stat-col strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .card-actions-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-view-details {
+      flex: 1;
+      padding: 9px 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #111;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: background 0.15s;
+    }
+
+    .btn-view-details:hover {
+      background: #f7f7f4;
+    }
+
+    .btn-joined {
+      flex: 1;
+      padding: 9px 12px;
+      background: var(--lime-soft);
+      border: 1px solid #d9f0a5;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--lime-text);
+      cursor: default;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .btn-register-dark {
+      flex: 1;
+      padding: 9px 12px;
+      background: #111;
+      border: 1px solid #111;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: opacity 0.15s;
+    }
+
+    .btn-register-dark:hover {
+      opacity: 0.9;
+    }
+
+    
+    .my-events-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .my-events-grid { grid-template-columns: 1fr; }
+    }
+
+    .my-event-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .gradient-accent-line {
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, #6366f1, #a855f7);
+      margin-top: -8px;
+      margin-bottom: 12px;
+      border-radius: 2px;
+    }
+
+    .my-event-reg-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .reg-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: #858580;
+      letter-spacing: 0.8px;
+    }
+
+    .reg-code {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      color: var(--lime-dark);
+      font-weight: 600;
+    }
+
+    .my-event-status-block {
+      margin-top: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .my-event-field-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+    }
+
+    .my-event-field-row .field-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: #858580;
+      letter-spacing: 0.5px;
+    }
+
+    .my-event-field-row .field-val-registered {
+      font-weight: 700;
+      color: #6b7280;
+      font-size: 11px;
+    }
+
+    .my-event-field-row .field-val-team {
+      font-weight: 800;
+      color: #111;
+      font-size: 12px;
+    }
+
+    .btn-open-journey {
+      width: fit-content;
+      padding: 10px 22px;
+      background: var(--lime);
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s, box-shadow 0.15s;
+    }
+
+    .btn-open-journey:hover {
+      box-shadow: 0 4px 12px rgba(168, 230, 46, 0.4);
+      transform: translateY(-1px);
+    }
+
+    
+    .hackmate-selector-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .hackmate-selector-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #333;
+      text-transform: uppercase;
+    }
+
+    .hackmate-select {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 12.5px;
+      color: #333;
+      outline: none;
+      cursor: pointer;
+      min-width: 280px;
+    }
+
+    .hackmate-empty-box {
+      background: #fafaf7;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .empty-box-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: #444;
+      margin: 14px 0 6px 0;
+      text-transform: uppercase;
+    }
+
+    .empty-box-desc {
+      font-size: 12.5px;
+      color: #888;
+      max-width: 460px;
+    }
+
+    /* HackMate Results */
+    .hackmate-active-results {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .hackmate-candidates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .candidate-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    
+    .ideacheck-columns {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 960px) {
+      .ideacheck-columns { grid-template-columns: 1fr; }
+    }
+
+    .ideacheck-input-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .ideacheck-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .gemini-badge {
+      background: #f0f4e8;
+      color: #65a30d;
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .ideacheck-textarea-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .ideacheck-textarea {
+      width: 100%;
+      height: 160px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #111;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .ideacheck-textarea:focus {
+      border-color: #111;
+    }
+
+    .ideacheck-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .char-count {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: #888;
+    }
+
+    .btn-check-idea {
+      padding: 10px 20px;
+      background: var(--lime);
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s, box-shadow 0.15s;
+    }
+
+    .btn-check-idea:hover {
+      box-shadow: 0 4px 12px rgba(168, 230, 46, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* How It Works Card */
+    .how-it-works-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+    }
+
+    .how-header {
+      font-family: 'DM Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .step-flow-item {
+      display: flex;
+      gap: 12px;
+    }
+
+    .step-num-box {
+      width: 26px;
+      height: 26px;
+      background: #111;
+      color: #fff;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .step-content strong {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+      color: #111;
+      margin-bottom: 2px;
+      letter-spacing: 0.2px;
+    }
+
+    .step-content p {
+      font-size: 11px;
+      color: #666;
+      line-height: 1.45;
+    }
+
+    .step-connector-line {
+      width: 1px;
+      height: 22px;
+      border-left: 1px dashed #deded8;
+      margin-left: 13px;
+      margin-top: 3px;
+      margin-bottom: 3px;
+    }
+
+    /* Idea Report Area (Bottom Card) */
+    .idea-report-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .report-placeholder-icon {
+      width: 36px;
+      height: 36px;
+      background: #111;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--lime);
+      font-size: 16px;
+    }
+
+    .report-placeholder-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #111;
+      margin: 14px 0 4px 0;
+      text-transform: uppercase;
+    }
+
+    .report-placeholder-desc {
+      font-size: 12px;
+      color: #888;
+    }
+
+    
+    .certificates-container {
+      max-width: 520px;
+    }
+
+    .certificate-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .cert-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .cert-type-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.2px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .cert-icons-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cert-check-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--lime);
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .cert-title {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      color: #111;
+      margin-bottom: 4px;
+    }
+
+    .cert-issue-date {
+      color: #777;
+      font-size: 12.5px;
+      margin-bottom: 18px;
+    }
+
+    .cert-code-stamp {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: #111;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .cert-actions-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-download-pdf {
+      padding: 10px 18px;
+      background: var(--lime);
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s, box-shadow 0.15s;
+    }
+
+    .btn-download-pdf:hover {
+      box-shadow: 0 4px 12px rgba(168, 230, 46, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .btn-copy-verify {
+      padding: 10px 18px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #111;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+
+    .btn-copy-verify:hover {
+      background: #f7f7f4;
+    }
+
+    
+    .toast-pill {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: #111;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      z-index: 9999;
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+      pointer-events: none;
+    }
+
+    .toast-pill.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-layout">
+
+    
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <!-- Logo Header -->
+        <a href="/" class="brand-header">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="brand-text">
+            <strong>CAMPUSCODE</strong>
+            <small>HACKATHON ARENA</small>
+          </div>
+        </a>
+
+
+        <span class="nav-section-label">WORKSPACE</span>
+
+        <ul class="nav-list">
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="overview">
+              <span class="nav-left">
+                <!-- Dashboard Icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                <span>Overview</span>
+              </span>
+              <span class="indicator">—</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn active" data-tab="events">
+              <span class="nav-left">
+                <!-- Trophy Icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                <span>Events</span>
+              </span>
+              <span class="indicator">—</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="my-events">
+              <span class="nav-left">
+                <!-- Clock / History Icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>My Events</span>
+              </span>
+              <span class="indicator">—</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="hackmate-ai">
+              <span class="nav-left">
+             
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
+          <span>HackMate AI</span>
+              </span>
+              <span class="indicator">→</span >
+       </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="ideacheck-ai">
+              <span class="nav-left">
+                
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    <span>IdeaCheck AI</span>
+              </span>
+              <span class="indicator">→</span >
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="certificates">
+              <span class="nav-left">
+              
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+    <span>Certificates</span>
+              </span>
+              <span class="indicator">→</span >
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="digital-card">
+              <span class="nav-left">
+               
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                <span>Digital Card</span>
+              </span>
+              <span class="indicator">→</span >
+      </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="rulebot-ai">
+              <span class="nav-left">
+         
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+        <span>RuleBot AI</span>
+              </span>
+              <span class="ai-badge">AI</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="student-guide">
+              <span class="nav-left">
+              
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+                <span>Student Guide</span>
+              </span>
+       <span class="indicator">→</span >
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="official-communication">
+              <span class="nav-left">
+               
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+     <span>Official Communication</span>
+              </span>
+              <span class="indicator">→</span >
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="notifications">
+              <span class="nav-left">
+          
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                <span>Notifications</span>
+              </span>
+              <span class="indicator">→</span >
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="help-support">
+              <span class="nav-left">
+              
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg>
+                <span>Help & Support</span>
+              </span>
+              <span class="indicator">→</span >
+            </button>
+          </li>
+          <li>
+            <button type="button" class="nav-item-btn" data-tab="profile">
+              <span class="nav-left">
+     
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+                <span>Profile</span>
+              </span>
+              <span class="indicator">→</span >
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ACCOUNT FOOTER (EXACT 1:1 TO SCREENSHOTS) -->
+      <div class="sidebar-bottom">
+        <span class="nav-section-label">ACCOUNT</span>
+        <div class="user-profile-row">
+          <div class="user-avatar-circle">PS</div>
+          <div class="user-info-text">
+            <strong>Piyush sen</strong>
+            <small>STUDENT</small>
+          </div>
+        </div>
+        <button type="button" class="logout-btn" onclick="handleLogout()">
+          <span>⤶</span>
+          <span>LOG OUT</span>
+        </button>
+      </div>
+    </aside>
+
+    
+    <div class="main-wrapper">
+
+      <!-- TOPBAR (EXACT BREADCRUMB + ACTIONS) -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <span class="topbar-breadcrumb">CAMPUSCODE / STUDENT</span>
+          <span class="topbar-title" id="topbar-title">EVENTS</span>
+        </div>
+        <div class="topbar-right">
+          <!-- Bell with Notification Badge 1 -->
+          <button type="button" class="bell-btn" title="Notifications" onclick="switchTab('notifications')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+            <span class="bell-badge">1</span>
+          </button>
+
+          <!-- REFRESH Button -->
+          <button type="button" class="refresh-btn" onclick="handleRefresh()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>
+            <span>REFRESH</span>
+          </button>
+
+          <!-- User Pill: Avatar + Piyush sen -->
+          <div class="topbar-user" onclick="switchTab('profile')" style="cursor: pointer;">
+            <div class="topbar-user-avatar">🧑‍💻</div>
+            <span class="topbar-user-name">Piyush sen</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW CONTAINER -->
+      <main class="view-container">
+
+        <!-- ====================================================
+             VIEW 1: EVENTS (HACKATHON ARENA)
+             ==================================================== -->
+        <section id="tab-events" class="tab-view active">
+          <!-- View Header -->
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">DISCOVER / BACKEND DATA</span>
+              <h1 class="view-title">EVENTS.</h1>
+              <p class="view-desc">Explore CampusCode events — hackathons, quizzes, workshops — and join the ones you want.</p>
+            </div>
+            <div class="live-data-counter">
+              <span class="live-data-number">03</span>
+              <span class="live-data-label">LIVE DATA</span>
+            </div>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="filter-pills-row">
+            <button type="button" class="filter-pill active" onclick="filterEvents('all', this)">All events</button>
+            <button type="button" class="filter-pill" onclick="filterEvents('hackathons', this)">Hackathons</button>
+            <button type="button" class="filter-pill" onclick="filterEvents('quizzes', this)">Quizzes</button>
+          </div>
+
+          <!-- 3 Events Cards Grid -->
+          <div class="events-grid">
+
+            <!-- CARD 1: ReBuild '26 -->
+            <div class="event-card" data-category="hackathons">
+              <div>
+                <!-- Banner Graphic -->
+                <div class="card-banner" style="background: linear-gradient(135deg, #f8f9f6 0%, #edf5e3 100%);">
+                  <div class="card-banner-grid"></div>
+                  <div style="position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;">
+                    <div style="background: #111; border-radius: 4px; padding: 4px 6px; display: flex; gap: 2.5px;">
+                      <span style="width: 2.5px; height: 14px; background: #fff; transform: skewX(-17deg); display: block;"></span>
+                      <span style="width: 2.5px; height: 14px; background: var(--purple); transform: skewX(-17deg); display: block;"></span>
+                      <span style="width: 2.5px; height: 14px; background: var(--lime); transform: skewX(-17deg); display: block;"></span>
+                    </div>
+                    <div>
+                      <span style="font-family: 'DM Mono', monospace; font-size: 7.5px; letter-spacing: 1.2px; color: #666; text-transform: uppercase; display: block;">CAMPUSCODE PRESENTS</span>
+                      <strong style="font-size: 19px; font-weight: 900; color: #111; letter-spacing: -0.3px; line-height: 1;">ReBuild <span style="color: #4f46e5;">'26</span></strong>
+                      <span style="font-family: 'DM Mono', monospace; font-size: 7px; font-weight: 800; color: #444; letter-spacing: 0.5px; text-transform: uppercase; display: block; margin-top: 1px;">THE DASHBOARD RECREATION HACKATHON</span>
+                    </div>
+                  </div>
+                  <div style="position: relative; z-index: 1; display: flex; gap: 4px; flex-wrap: wrap;">
+                    <span style="background: rgba(255,255,255,0.9); border: 1px solid #d4d4cb; padding: 2px 5px; border-radius: 3px; font-size: 7.5px; font-family: 'DM Mono'; color: #333; font-weight: 600;">• CERTIFICATE FOR WINNERS</span>
+                    <span style="background: rgba(255,255,255,0.9); border: 1px solid #d4d4cb; padding: 2px 5px; border-radius: 3px; font-size: 7.5px; font-family: 'DM Mono'; color: #333; font-weight: 600;">• INTERNSHIP OPPORTUNITY</span>
+                    <span style="background: rgba(255,255,255,0.9); border: 1px solid #d4d4cb; padding: 2px 5px; border-radius: 3px; font-size: 7.5px; font-family: 'DM Mono'; color: #333; font-weight: 600;">• REGISTER BY 5 NOV 2026</span>
+                  </div>
+                  <div style="position: absolute; right: -15px; top: -15px; width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, rgba(168,230,46,0.3) 0%, rgba(255,255,255,0) 70%); pointer-events: none;"></div>
+                </div>
+
+                <div class="card-meta-bar">
+                  <span class="card-hex-code">e2798ce3-a1b5-4806-9147-4d9f10c52ef1</span>
+                  <span class="card-status-live">LIVE</span>
+                </div>
+
+                <div class="card-title-row">
+                  <div class="circle-avatar-badge green">RE</div>
+                  <h3 class="event-card-heading">ReBuild '26</h3>
+                </div>
+
+                <p class="event-card-desc">
+                  ReBuild '26 is an individual dashboard-recreation hackathon by CampusCode. You participate alone, but you must create a team name for tracking and use it on your Unstop registration, the CampusCode portal, and every submission. Round 1 (Friday, 6 Nov, morning to 10 PM): Recreate the CampusCode user flow faithfully — Dashboard, Login, Register, and Student dashboard — and submit your demo any time till 10 PM. Round 2 (Saturday, 7 Nov, top performers from Round 1 only): Build a complete new UI in CampusCode's vibe. Frontend only, mock data is fine. No presentation round. Prizes: Winner certificate + CampusCode internship with ₹15,000 stipend, runner-up certificate, and participation certificates for all. Sunday, 8 Nov (Diwali) is free. This is a paid event (₹50 on Unstop). Paid students receive an invite code — enter it when you join this event on the portal.
+                </p>
+              </div>
+
+              <div>
+                <div class="card-stats-row">
+                  <div class="card-stat-col">
+                    <small>MODE</small>
+                    <strong>—</strong>
+                  </div>
+                  <div class="card-stat-col">
+                    <small>TEAM SIZE</small>
+                    <strong>Individual</strong>
+                  </div>
+                  <div class="card-stat-col">
+                    <small>START</small>
+                    <strong>Nov 06, 2026</strong>
+                  </div>
+                </div>
+
+                <div class="card-actions-row">
+                  <button type="button" class="btn-view-details" onclick="showToast('Event Details: ReBuild 26 Hackathon')">
+                    <span>VIEW DETAILS</span>
+                    <b>↗</b>
+                  </button>
+                  <button type="button" class="btn-joined" onclick="switchTab('my-events')">
+                    <span>✓ JOINED</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 2: FirstCommit '26 Quiz Competition 2.0 -->
+            <div class="event-card" data-category="quizzes">
+              <div>
+                <!-- Banner Graphic -->
+                <div class="card-banner" style="background: linear-gradient(135deg, #f7f8f9 0%, #edf1f8 100%);">
+                  <div class="card-banner-grid"></div>
+                  <div style="position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;">
+                    <div style="background: #111; border-radius: 4px; padding: 4px 6px; display: flex; gap: 2.5px;">
+                      <span style="width: 2.5px; height: 14px; background: #fff; transform: skewX(-17deg); display: block;"></span>
+                      <span style="width: 2.5px; height: 14px; background: var(--purple); transform: skewX(-17deg); display: block;"></span>
+                      <span style="width: 2.5px; height: 14px; background: var(--lime); transform: skewX(-17deg); display: block;"></span>
+                    </div>
+                    <div>
+                      <span style="font-family: 'DM Mono', monospace; font-size: 7px; letter-spacing: 1.2px; color: #666; text-transform: uppercase; display: block;">CAMPUSCODE</span>
+                      <strong style="font-size: 14px; font-weight: 900; color: #111; letter-spacing: -0.2px; line-height: 1;">FIRSTCOMMIT '26</strong>
+                      <span style="font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 800; color: #4338ca; letter-spacing: 0.4px; display: block; margin-top: 1px;">QUIZ COMPETITION</span>
+                    </div>
+                  </div>
+                  <div style="position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1px;">
+                    <span style="font-size: 7.5px; font-family: 'DM Mono'; color: #666; font-weight: 700;">50 QUESTIONS • TECH • AI • ENGINEERING</span>
+                    <span style="font-size: 7px; font-family: 'DM Mono'; color: #888;">SUNDAY, 1 NOVEMBER 2026</span>
+                  </div>
+                  <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 42px; font-weight: 900; color: rgba(99, 102, 241, 0.12); pointer-events: none; line-height: 0.9; text-align: right;">
+                    50<span style="display: block; font-size: 8px; font-family: 'DM Mono'; letter-spacing: 0.5px;">QUESTIONS</span>
+                  </div>
+                </div>
+
+                <div class="card-meta-bar">
+                  <span class="card-hex-code">20084c70-4792-4b89-a2e9-ff6764bf20d6</span>
+                  <span class="card-status-live" style="color: var(--lime-dark);">COMPLETED</span>
+                </div>
+
+                <div class="card-title-row">
+                  <div class="circle-avatar-badge green">FQ</div>
+                  <div>
+                    <h3 class="event-card-heading">FirstCommit '26 Quiz Competition 2.0</h3>
+                  </div>
+                </div>
+                <div class="card-sub-mode">QUIZ • SOLO • TIMED</div>
+
+                <p class="event-card-desc">
+                  This is the reattempt quiz those who missed
+                </p>
+              </div>
+
+              <div>
+                <div class="card-stats-row">
+                  <div class="card-stat-col">
+                    <small>MODE</small>
+                    <strong>—</strong>
+                  </div>
+                  <div class="card-stat-col">
+                    <small>FORMAT</small>
+                    <strong>Solo</strong>
+                  </div>
+                  <div class="card-stat-col">
+                    <small>START</small>
+                    <strong>—</strong>
+                  </div>
+                </div>
+
+                <div class="card-actions-row">
+                  <button type="button" class="btn-view-details" onclick="showToast('Viewing FirstCommit 2.0 Details')">
+                    <span>VIEW DETAILS</span>
+                    <b>↗</b>
+                  </button>
+                  <button type="button" class="btn-register-dark" onclick="showToast('Registration window completed', 'info')">
+                    <span>REGISTER FOR QUIZ</span>
+                    <b>↗</b>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 3: FirstCommit '26 Quiz Competition -->
+            <div class="event-card" data-category="quizzes">
+              <div>
+                <!-- Banner Graphic -->
+                <div class="card-banner" style="background: linear-gradient(135deg, #f7f8f9 0%, #edf1f8 100%);">
+                  <div class="card-banner-grid"></div>
+                  <div style="position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;">
+                    <div style="background: #111; border-radius: 4px; padding: 4px 6px; display: flex; gap: 2.5px;">
+                      <span style="width: 2.5px; height: 14px; background: #fff; transform: skewX(-17deg); display: block;"></span>
+                      <span style="width: 2.5px; height: 14px; background: var(--purple); transform: skewX(-17deg); display: block;"></span>
+                      <span style="width: 2.5px; height: 14px; background: var(--lime); transform: skewX(-17deg); display: block;"></span>
+                    </div>
+                    <div>
+                      <span style="font-family: 'DM Mono', monospace; font-size: 7px; letter-spacing: 1.2px; color: #666; text-transform: uppercase; display: block;">CAMPUSCODE</span>
+                      <strong style="font-size: 14px; font-weight: 900; color: #111; letter-spacing: -0.2px; line-height: 1;">FIRSTCOMMIT '26</strong>
+                      <span style="font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 800; color: #4338ca; letter-spacing: 0.4px; display: block; margin-top: 1px;">QUIZ COMPETITION</span>
+                    </div>
+                  </div>
+                  <div style="position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1px;">
+                    <span style="font-size: 7.5px; font-family: 'DM Mono'; color: #666; font-weight: 700;">50 QUESTIONS • TECH • AI • ENGINEERING</span>
+                    <span style="font-size: 7px; font-family: 'DM Mono'; color: #888;">SUNDAY, 1 NOVEMBER 2026</span>
+                  </div>
+                  <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 42px; font-weight: 900; color: rgba(99, 102, 241, 0.12); pointer-events: none; line-height: 0.9; text-align: right;">
+                    50<span style="display: block; font-size: 8px; font-family: 'DM Mono'; letter-spacing: 0.5px;">QUESTIONS</span>
+                  </div>
+                </div>
+
+                <div class="card-meta-bar">
+                  <span class="card-hex-code">80299fc1-3e30-466f-a148-fd45c77c84be</span>
+                  <span class="card-status-live" style="color: var(--lime-dark);">COMPLETED</span>
+                </div>
+
+                <div class="card-title-row">
+                  <div class="circle-avatar-badge dark">FQ</div>
+                  <div>
+                    <h3 class="event-card-heading">FirstCommit '26 Quiz Competition</h3>
+                  </div>
+                </div>
+                <div class="card-sub-mode">QUIZ • SOLO • TIMED</div>
+
+                <p class="event-card-desc">
+                  The quiz features 50 questions across technology, AI, and engineering — 42 multiple-choice questions and 8 true/false questions — to be completed in 30 minutes on Sunday, 1 November 2026. It is conducted online on the CampusCode platform, and every participant gets a single attempt.
+                </p>
+              </div>
+
+              <div>
+                <div class="card-stats-row">
+                  <div class="card-stat-col">
+                    <small>MODE</small>
+                    <strong>—</strong>
+                  </div>
+                  <div class="card-stat-col">
+                    <small>FORMAT</small>
+                    <strong>Solo</strong>
+                  </div>
+                  <div class="card-stat-col">
+                    <small>START</small>
+                    <strong>—</strong>
+                  </div>
+                </div>
+
+                <div class="card-actions-row">
+                  <button type="button" class="btn-view-details" onclick="showToast('Viewing FirstCommit Details')">
+                    <span>VIEW DETAILS</span>
+                    <b>↗</b>
+                  </button>
+                  <button type="button" class="btn-joined" onclick="switchTab('my-events')">
+                    <span>✓ JOINED</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 2: MY EVENTS (MY JOINED EVENTS)
+             ==================================================== -->
+        <section id="tab-my-events" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">MY ACTIVITY / BACKEND DATA</span>
+              <h1 class="view-title">MY EVENTS.</h1>
+              <p class="view-desc">Every event you joined, in one place. Open one to see its rounds, team, results and certificates.</p>
+            </div>
+            <div class="live-data-counter">
+              <span class="live-data-number">02</span>
+              <span class="live-data-label">LIVE DATA</span>
+            </div>
+          </div>
+
+          <div class="my-events-grid">
+
+            <!-- MY EVENT CARD 1: ReBuild '26 -->
+            <div class="my-event-card">
+              <!-- Banner -->
+              <div class="card-banner" style="background: linear-gradient(135deg, #f8f9f6 0%, #edf5e3 100%);">
+                <div class="card-banner-grid"></div>
+                <div style="position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;">
+                  <div style="background: #111; border-radius: 4px; padding: 4px 6px; display: flex; gap: 2.5px;">
+                    <span style="width: 2.5px; height: 14px; background: #fff; transform: skewX(-17deg); display: block;"></span>
+                    <span style="width: 2.5px; height: 14px; background: var(--purple); transform: skewX(-17deg); display: block;"></span>
+                    <span style="width: 2.5px; height: 14px; background: var(--lime); transform: skewX(-17deg); display: block;"></span>
+                  </div>
+                  <div>
+                    <span style="font-family: 'DM Mono', monospace; font-size: 7.5px; letter-spacing: 1.2px; color: #666; text-transform: uppercase; display: block;">CAMPUSCODE PRESENTS</span>
+                    <strong style="font-size: 19px; font-weight: 900; color: #111; letter-spacing: -0.3px; line-height: 1;">ReBuild <span style="color: #4f46e5;">'26</span></strong>
+                    <span style="font-family: 'DM Mono', monospace; font-size: 7px; font-weight: 800; color: #444; letter-spacing: 0.5px; text-transform: uppercase; display: block; margin-top: 1px;">THE DASHBOARD RECREATION HACKATHON</span>
+                  </div>
+                </div>
+                <div style="position: relative; z-index: 1; display: flex; gap: 4px; flex-wrap: wrap;">
+                  <span style="background: rgba(255,255,255,0.9); border: 1px solid #d4d4cb; padding: 2px 5px; border-radius: 3px; font-size: 7.5px; font-family: 'DM Mono'; color: #333; font-weight: 600;">• CERTIFICATE FOR WINNERS</span>
+                  <span style="background: rgba(255,255,255,0.9); border: 1px solid #d4d4cb; padding: 2px 5px; border-radius: 3px; font-size: 7.5px; font-family: 'DM Mono'; color: #333; font-weight: 600;">• INTERNSHIP OPPORTUNITY</span>
+                  <span style="background: rgba(255,255,255,0.9); border: 1px solid #d4d4cb; padding: 2px 5px; border-radius: 3px; font-size: 7.5px; font-family: 'DM Mono'; color: #333; font-weight: 600;">• REGISTER BY 5 NOV 2026</span>
+                </div>
+              </div>
+
+              <!-- Gradient line -->
+              <div class="gradient-accent-line"></div>
+
+              <!-- Registration Code -->
+              <div class="my-event-reg-row">
+                <span class="reg-label">REGISTRATION</span>
+                <span class="reg-code">d3e0c40c-5064-4ada-ae4a-0f2575478931</span>
+              </div>
+
+              <!-- Circle & Title -->
+              <div class="card-title-row">
+                <div class="circle-avatar-badge green">RE</div>
+                <h3 class="event-card-heading" style="font-size: 24px;">ReBuild '26</h3>
+              </div>
+
+              <!-- Status Block -->
+              <div class="my-event-status-block">
+                <div class="my-event-field-row">
+                  <span class="field-tag">STATUS:</span>
+                  <span class="field-val-registered">REGISTERED</span>
+                </div>
+                <div class="my-event-field-row">
+                  <span class="field-tag">TEAM:</span>
+                  <span class="field-val-team">Xargon Dev</span>
+                </div>
+              </div>
+
+              <!-- Action Button -->
+              <button type="button" class="btn-open-journey" onclick="showToast('Opening ReBuild 26 Workspace Journey')">
+                <span>OPEN JOURNEY</span>
+                <b>↗</b>
+              </button>
+            </div>
+
+            <!-- MY EVENT CARD 2: FirstCommit '26 Quiz Competition -->
+            <div class="my-event-card">
+              <!-- Banner -->
+              <div class="card-banner" style="background: linear-gradient(135deg, #f7f8f9 0%, #edf1f8 100%);">
+                <div class="card-banner-grid"></div>
+                <div style="position: relative; z-index: 1; display: flex; align-items: center; gap: 8px;">
+                  <div style="background: #111; border-radius: 4px; padding: 4px 6px; display: flex; gap: 2.5px;">
+                    <span style="width: 2.5px; height: 14px; background: #fff; transform: skewX(-17deg); display: block;"></span>
+                    <span style="width: 2.5px; height: 14px; background: var(--purple); transform: skewX(-17deg); display: block;"></span>
+                    <span style="width: 2.5px; height: 14px; background: var(--lime); transform: skewX(-17deg); display: block;"></span>
+                  </div>
+                  <div>
+                    <span style="font-family: 'DM Mono', monospace; font-size: 7px; letter-spacing: 1.2px; color: #666; text-transform: uppercase; display: block;">CAMPUSCODE</span>
+                    <strong style="font-size: 14px; font-weight: 900; color: #111; letter-spacing: -0.2px; line-height: 1;">FIRSTCOMMIT '26</strong>
+                    <span style="font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 800; color: #4338ca; letter-spacing: 0.4px; display: block; margin-top: 1px;">QUIZ COMPETITION</span>
+                  </div>
+                </div>
+                <div style="position: relative; z-index: 1; display: flex; flex-direction: column; gap: 1px;">
+                  <span style="font-size: 7.5px; font-family: 'DM Mono'; color: #666; font-weight: 700;">50 QUESTIONS • TECH • AI • ENGINEERING</span>
+                  <span style="font-size: 7px; font-family: 'DM Mono'; color: #888;">SUNDAY, 1 NOVEMBER 2026</span>
+                </div>
+                <div style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 42px; font-weight: 900; color: rgba(99, 102, 241, 0.12); pointer-events: none; line-height: 0.9; text-align: right;">
+                  50<span style="display: block; font-size: 8px; font-family: 'DM Mono'; letter-spacing: 0.5px;">QUESTIONS</span>
+                </div>
+              </div>
+
+              <!-- Gradient line -->
+              <div class="gradient-accent-line"></div>
+
+              <!-- Registration Code -->
+              <div class="my-event-reg-row">
+                <span class="reg-label">REGISTRATION</span>
+                <span class="reg-code">3910a2de-0a9f-41b5-a3ab-b13e67325631</span>
+              </div>
+
+              <!-- Circle & Title -->
+              <div class="card-title-row">
+                <div class="circle-avatar-badge dark">FQ</div>
+                <h3 class="event-card-heading" style="font-size: 22px;">FirstCommit '26 Quiz Competition</h3>
+              </div>
+
+              <!-- Status Block -->
+              <div class="my-event-status-block">
+                <div class="my-event-field-row">
+                  <span class="field-tag">STATUS:</span>
+                  <span class="field-val-registered">REGISTERED</span>
+                </div>
+                <div class="my-event-field-row">
+                  <span class="field-tag">TEAM:</span>
+                  <span class="field-val-team">NOT ASSIGNED</span>
+                </div>
+              </div>
+
+              <!-- Action Button -->
+              <button type="button" class="btn-open-journey" onclick="showToast('Opening Quiz Results & Journey')">
+                <span>OPEN JOURNEY</span>
+                <b>↗</b>
+              </button>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 3: HACKMATE AI (FIND YOUR TEAM)
+             ==================================================== -->
+        <section id="tab-hackmate-ai" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">INTELLIGENCE / HACKMATE</span>
+              <h1 class="view-title">FIND YOUR TEAM.</h1>
+              <p class="view-desc">Find registered students from the same hackathon using HackMate match scores. Search by name or CampusCode ID, or scan a teammate's QR on mobile.</p>
+            </div>
+            <div class="live-data-counter">
+              <span class="live-data-number" id="hackmate-count">00</span>
+              <span class="live-data-label">LIVE DATA</span>
+            </div>
+          </div>
+
+          <!-- Select Registered Hackathon Card -->
+          <div class="hackmate-selector-card">
+            <span class="hackmate-selector-label">SELECT REGISTERED HACKATHON</span>
+            <select class="hackmate-select" id="hackmate-select-input" onchange="handleHackmateSelect(this.value)">
+              <option value="">Choose a registered hackathon</option>
+              <option value="rebuild">ReBuild '26</option>
+              <option value="firstcommit">FirstCommit '26 Quiz Competition</option>
+            </select>
+          </div>
+
+          <!-- Empty State (Exact 1:1 to Screenshot 3) -->
+          <div class="hackmate-empty-box" id="hackmate-empty-state">
+            <div class="brand-mark" style="transform: scale(1.4); margin-bottom: 8px;">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <h4 class="empty-box-title">NO REGISTERED HACKATHONS</h4>
+            <p class="empty-box-desc">Register for a hackathon first. HackMate only works with your registered hackathons.</p>
+          </div>
+
+          <!-- Active Teammate Results (When hackathon selected) -->
+          <div class="hackmate-active-results" id="hackmate-results">
+            <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+              <input type="text" placeholder="Search candidate by name or skill..." style="padding: 8px 14px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; flex: 1;">
+              <button type="button" class="btn-register-dark" style="flex: none; padding: 8px 16px;">Search Teammates</button>
+            </div>
+            <div class="hackmate-candidates-grid">
+              <div class="candidate-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                  <div>
+                    <strong style="font-size: 15px; color: #111; display: block;">Priya Nair</strong>
+                    <span style="font-size: 11px; color: var(--purple); font-weight: 600;">UI/UX & Frontend</span>
+                    <small style="font-size: 11px; color: #888; display: block;">IIT Madras</small>
+                  </div>
+                  <span style="background: rgba(130, 185, 26, 0.15); color: #4d7c0f; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px;">98% MATCH</span>
+                </div>
+                <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 14px;">
+                  <span style="background: #f0f0ec; padding: 2px 6px; border-radius: 3px; font-size: 9.5px; font-family: 'DM Mono';">React</span>
+                  <span style="background: #f0f0ec; padding: 2px 6px; border-radius: 3px; font-size: 9.5px; font-family: 'DM Mono';">Figma</span>
+                  <span style="background: #f0f0ec; padding: 2px 6px; border-radius: 3px; font-size: 9.5px; font-family: 'DM Mono';">Tailwind</span>
+                </div>
+                <button type="button" class="btn-register-dark" style="width: 100%;" onclick="this.innerText='INVITATION SENT ✓'; this.style.background='#82b91a'; showToast('Invitation sent to Priya Nair!')">INVITE TO TEAM ↗</button>
+              </div>
+
+              <div class="candidate-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                  <div>
+                    <strong style="font-size: 15px; color: #111; display: block;">Rohan Varma</strong>
+                    <span style="font-size: 11px; color: var(--purple); font-weight: 600;">AI / ML Engineer</span>
+                    <small style="font-size: 11px; color: #888; display: block;">Anna University</small>
+                  </div>
+                  <span style="background: rgba(130, 185, 26, 0.15); color: #4d7c0f; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px;">95% MATCH</span>
+                </div>
+                <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 14px;">
+                  <span style="background: #f0f0ec; padding: 2px 6px; border-radius: 3px; font-size: 9.5px; font-family: 'DM Mono';">PyTorch</span>
+                  <span style="background: #f0f0ec; padding: 2px 6px; border-radius: 3px; font-size: 9.5px; font-family: 'DM Mono';">FastAPI</span>
+                  <span style="background: #f0f0ec; padding: 2px 6px; border-radius: 3px; font-size: 9.5px; font-family: 'DM Mono';">LangChain</span>
+                </div>
+                <button type="button" class="btn-register-dark" style="width: 100%;" onclick="this.innerText='INVITATION SENT ✓'; this.style.background='#82b91a'; showToast('Invitation sent to Rohan Varma!')">INVITE TO TEAM ↗</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 4: IDEACHECK AI (VALIDATE PROJECT CONCEPT)
+             ==================================================== -->
+        <section id="tab-ideacheck-ai" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">CAMPUSCODE INTELLIGENCE / IDEACHECK</span>
+              <h1 class="view-title">IDEACHECK AI.</h1>
+              <p class="view-desc">Check your idea against the CampusCode reference dataset, then get a Gemini-powered explanation and improvement plan.</p>
+            </div>
+          </div>
+
+          <div class="ideacheck-columns">
+            <!-- Left: Input Card -->
+            <div class="ideacheck-input-card">
+              <div>
+                <div class="ideacheck-card-header">
+                  <div>
+                    <span class="view-sub-tag" style="margin-bottom: 2px;">01 / YOUR IDEA</span>
+                    <h3 style="font-size: 19px; font-weight: 900; color: #111; letter-spacing: -0.3px;">WHAT ARE YOU BUILDING?</h3>
+                  </div>
+                  <span class="gemini-badge">GEMINI AI</span>
+                </div>
+
+                <div class="ideacheck-textarea-wrapper">
+                  <textarea
+                    id="idea-input-box"
+                    class="ideacheck-textarea"
+                    placeholder="Describe your project idea, the problem it solves, target users and the main features..."
+                    maxlength="5000"
+                    oninput="handleIdeaInput(this)"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="ideacheck-bottom-row">
+                <span class="char-count" id="char-counter">0 / 5000</span>
+                <button type="button" class="btn-check-idea" onclick="runIdeaAnalysis()">
+                  <span id="idea-btn-text">CHECK IDEA WITH AI</span>
+                  <b>↗</b>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: How It Works -->
+            <div class="how-it-works-card">
+              <div class="how-header">HOW IT WORKS</div>
+
+              <!-- Step 01 -->
+              <div class="step-flow-item">
+                <div class="step-num-box">01</div>
+                <div class="step-content">
+                  <strong>DATASET CHECK</strong>
+                  <p>Compares your idea against the CampusCode reference projects.</p>
+                </div>
+              </div>
+
+              <div class="step-connector-line"></div>
+
+              <!-- Step 02 -->
+              <div class="step-flow-item">
+                <div class="step-num-box">02</div>
+                <div class="step-content">
+                  <strong>SIMILARITY</strong>
+                  <p>Calculates the strongest project similarity and identifies the matching reference.</p>
+                </div>
+              </div>
+
+              <div class="step-connector-line"></div>
+
+              <!-- Step 03 -->
+              <div class="step-flow-item">
+                <div class="step-num-box">03</div>
+                <div class="step-content">
+                  <strong>GEMINI AI</strong>
+                  <p>Explains what is similar, what is different and how you can improve the idea.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom: Report Box -->
+          <div class="idea-report-box" id="idea-report-container">
+            <div class="report-placeholder-icon">✦</div>
+            <h4 class="report-placeholder-title">YOUR IDEA REPORT WILL APPEAR HERE</h4>
+            <p class="report-placeholder-desc">Enter an idea above to run the CampusCode dataset check and Gemini AI analysis.</p>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 5: CERTIFICATES
+             ==================================================== -->
+        <section id="tab-certificates" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">REWARDS / CERTIFICATES</span>
+              <h1 class="view-title">CERTIFICATES.</h1>
+              <p class="view-desc">Every certificate carries a unique code anyone can verify — share the verify link with recruiters.</p>
+            </div>
+          </div>
+
+          <div class="certificates-container">
+            <!-- Exact Certificate Card (1:1 to Screenshot 5) -->
+            <div class="certificate-card">
+              <div class="cert-top-row">
+                <span class="cert-type-tag">PARTICIPATION CERTIFICATE</span>
+                <div class="cert-icons-group">
+                  <!-- Medal Icon -->
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                  <div class="cert-check-circle">✓</div>
+                </div>
+              </div>
+
+              <h3 class="cert-title">FirstCommit '26 Quiz Competition</h3>
+              <p class="cert-issue-date">Issued 03 Nov 2026</p>
+
+              <span class="cert-code-stamp">CC-CERT-KDGS73EC</span>
+
+              <div class="cert-actions-row">
+                <button type="button" class="btn-download-pdf" onclick="handleDownloadCert()">
+                  <span>DOWNLOAD PDF</span>
+                  <b>↗</b>
+                </button>
+                <button type="button" class="btn-copy-verify" onclick="handleCopyVerifyLink()">
+                  <span>COPY VERIFY LINK</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             AUXILIARY TABS (OVERVIEW, RULEBOT, PROFILE, ETC.)
+             ==================================================== -->
+        <section id="tab-overview" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">STUDENT DASHBOARD / OVERVIEW</span>
+              <h1 class="view-title">WELCOME BACK, PIYUSH.</h1>
+              <p class="view-desc">You are actively competing in ReBuild '26 hackathon. Round 1 submissions close at 10:00 PM.</p>
+            </div>
+          </div>
+          <div style="background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 28px; max-width: 800px;">
+            <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 12px;">Active Submission: ReBuild '26</h3>
+            <p style="color: #666; font-size: 13px; margin-bottom: 20px;">Recreate the CampusCode user flow faithfully: Dashboard, Login, Register, and Student dashboard.</p>
+            <div style="display: flex; gap: 12px;">
+              <button type="button" class="btn-open-journey" onclick="switchTab('my-events')">View My Event Workspace ↗</button>
+              <button type="button" class="btn-view-details" onclick="switchTab('events')">Browse All Challenges</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 6: DIGITAL CARD (EXACT 1:1 TO SCREENSHOT 1)
+             ==================================================== -->
+        <section id="tab-digital-card" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">IDENTITY / VERIFIED ACCOUNT</span>
+              <h1 class="view-title">DIGITAL ID.</h1>
+              <p class="view-desc">Your identity card uses the real CampusCode profile and CampusCode ID returned by the backend.</p>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;">
+            <!-- LEFT: Physical Digital ID Card -->
+            <div style="background: #ffffff; border: 1px solid #e5e5df; border-radius: 18px; width: 440px; max-width: 100%; padding: 28px; box-shadow: 0 20px 45px rgba(0,0,0,0.06); position: relative; overflow: hidden;">
+              <!-- Radial Glow at Top Right -->
+              <div style="position: absolute; right: -30px; top: -30px; width: 180px; height: 180px; border-radius: 50%; background: radial-gradient(circle, rgba(168,230,46,0.2) 0%, rgba(255,255,255,0) 70%); pointer-events: none;"></div>
+
+              <!-- Top Row inside Card -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; position: relative; z-index: 1;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <div class="brand-mark">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <div class="brand-text">
+                    <strong style="font-size: 13px;">CAMPUSCODE</strong>
+                    <small style="font-size: 7.5px;">HACKATHON ARENA</small>
+                  </div>
+                </div>
+                <span style="font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; color: var(--lime-dark); letter-spacing: 1.2px;">VERIFIED</span>
+              </div>
+
+              <!-- Student Profile Row -->
+              <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px; position: relative; z-index: 1;">
+                <div style="width: 58px; height: 58px; border-radius: 50%; background: #d9f99d; display: flex; align-items: center; justify-content: center; font-size: 28px; border: 2px solid #bef264; flex-shrink: 0;">
+                  🧑‍💻
+                </div>
+                <div>
+                  <span style="font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 800; color: var(--lime-dark); letter-spacing: 1px; display: block; text-transform: uppercase;">STUDENT</span>
+                  <strong style="font-size: 22px; font-weight: 900; color: #111; letter-spacing: -0.3px; line-height: 1.2; display: block;">Piyush sen</strong>
+                  <small style="font-family: 'DM Mono', monospace; font-size: 9.5px; color: #858580; letter-spacing: 0.2px;">piyush.sencse2025@indoreinstitute.com</small>
+                </div>
+              </div>
+
+              <!-- Divider -->
+              <div style="height: 1px; background: #f0f0ec; margin-bottom: 16px;"></div>
+
+              <!-- 3-Column Meta Row -->
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); margin-bottom: 20px;">
+                <div>
+                  <small style="font-family: 'DM Mono', monospace; font-size: 8.5px; color: #858580; letter-spacing: 0.5px; display: block; text-transform: uppercase; margin-bottom: 2px;">CAMPUSCODE ID</small>
+                  <strong style="font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 800; color: #111;">CC-ZZW4VY</strong>
+                </div>
+                <div>
+                  <small style="font-family: 'DM Mono', monospace; font-size: 8.5px; color: #858580; letter-spacing: 0.5px; display: block; text-transform: uppercase; margin-bottom: 2px;">ROLE</small>
+                  <strong style="font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 800; color: #111;">STUDENT</strong>
+                </div>
+                <div>
+                  <small style="font-family: 'DM Mono', monospace; font-size: 8.5px; color: #858580; letter-spacing: 0.5px; display: block; text-transform: uppercase; margin-bottom: 2px;">ACCOUNT</small>
+                  <strong style="font-family: 'DM Mono', monospace; font-size: 12.5px; font-weight: 800; color: #111;">ACTIVE</strong>
+                </div>
+              </div>
+
+              <!-- Divider -->
+              <div style="height: 1px; background: #f0f0ec; margin-bottom: 20px;"></div>
+
+              <!-- Center QR Code Box -->
+              <div style="text-align: center; margin-bottom: 24px;">
+                <div style="background: #ffffff; border: 1px solid #deded8; border-radius: 8px; padding: 16px; display: inline-block; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+                  <svg width="180" height="180" viewBox="0 0 100 100" style="display: block; margin: 0 auto;">
+                    <!-- Top-Left Finder Square -->
+                    <rect x="5" y="5" width="28" height="28" rx="4" fill="#111" />
+                    <rect x="10" y="10" width="18" height="18" rx="2" fill="#fff" />
+                    <rect x="14" y="14" width="10" height="10" rx="1" fill="#111" />
+                    <!-- Top-Right Finder Square -->
+                    <rect x="67" y="5" width="28" height="28" rx="4" fill="#111" />
+                    <rect x="72" y="10" width="18" height="18" rx="2" fill="#fff" />
+                    <rect x="76" y="14" width="10" height="10" rx="1" fill="#111" />
+                    <!-- Bottom-Left Finder Square -->
+                    <rect x="5" y="67" width="28" height="28" rx="4" fill="#111" />
+                    <rect x="10" y="72" width="18" height="18" rx="2" fill="#fff" />
+                    <rect x="14" y="76" width="10" height="10" rx="1" fill="#111" />
+                    <!-- Data Matrix Dots -->
+                    <rect x="38" y="7" width="5" height="5" fill="#111" />
+                    <rect x="47" y="7" width="5" height="5" fill="#111" />
+                    <rect x="56" y="7" width="5" height="5" fill="#111" />
+                    <rect x="38" y="16" width="5" height="5" fill="#111" />
+                    <rect x="47" y="25" width="5" height="5" fill="#111" />
+                    <rect x="56" y="20" width="5" height="5" fill="#111" />
+                    <rect x="38" y="38" width="8" height="8" fill="#111" />
+                    <rect x="50" y="38" width="5" height="5" fill="#111" />
+                    <rect x="58" y="38" width="5" height="5" fill="#111" />
+                    <rect x="68" y="38" width="8" height="5" fill="#111" />
+                    <rect x="80" y="38" width="6" height="5" fill="#111" />
+                    <rect x="9" y="38" width="8" height="5" fill="#111" />
+                    <rect x="22" y="38" width="6" height="5" fill="#111" />
+                    <rect x="38" y="50" width="5" height="7" fill="#111" />
+                    <rect x="47" y="50" width="7" height="5" fill="#111" />
+                    <rect x="58" y="50" width="5" height="8" fill="#111" />
+                    <rect x="70" y="50" width="8" height="5" fill="#111" />
+                    <rect x="82" y="50" width="5" height="7" fill="#111" />
+                    <rect x="38" y="65" width="5" height="5" fill="#111" />
+                    <rect x="47" y="65" width="5" height="5" fill="#111" />
+                    <rect x="56" y="65" width="5" height="5" fill="#111" />
+                    <rect x="65" y="65" width="5" height="5" fill="#111" />
+                    <rect x="75" y="65" width="5" height="5" fill="#111" />
+                    <rect x="85" y="65" width="5" height="5" fill="#111" />
+                    <rect x="38" y="75" width="5" height="5" fill="#111" />
+                    <rect x="47" y="80" width="5" height="5" fill="#111" />
+                    <rect x="56" y="75" width="5" height="8" fill="#111" />
+                    <rect x="65" y="80" width="5" height="5" fill="#111" />
+                    <rect x="75" y="75" width="5" height="5" fill="#111" />
+                    <rect x="85" y="80" width="5" height="5" fill="#111" />
+                    <rect x="38" y="88" width="5" height="5" fill="#111" />
+                    <rect x="47" y="88" width="8" height="5" fill="#111" />
+                    <rect x="65" y="88" width="8" height="5" fill="#111" />
+                    <rect x="80" y="88" width="8" height="5" fill="#111" />
+                  </svg>
+                  <span style="font-family: 'DM Mono', monospace; font-size: 7.5px; font-weight: 700; letter-spacing: 0.6px; color: #555; text-transform: uppercase; padding: 4px 8px; background: #fafaf7; border-radius: 4px; display: inline-block; margin-top: 10px;">
+                    SCAN TO OPEN PUBLIC CAMPUSCODE PROFILE
+                  </span>
+                </div>
+              </div>
+
+              <!-- Card Bottom -->
+              <div style="border-top: 1px solid #f0f0ec; padding-top: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-family: 'DM Mono', monospace; font-size: 8px; color: #888; letter-spacing: 1px;">LEARN • BUILD • BELONG</span>
+                <span style="font-family: 'DM Mono', monospace; font-size: 8px; color: #888;">CC-ZZW4VY</span>
+              </div>
+            </div>
+
+            <!-- RIGHT: Identity Summary Card (Exact 1:1) -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 10px; padding: 26px; width: 340px; max-width: 100%;">
+              <span class="view-sub-tag" style="margin-bottom: 4px;">IDENTITY / 01</span>
+              <h3 style="font-size: 26px; font-weight: 900; line-height: 1.1; margin: 4px 0 14px 0; color: #111;">
+                ONE ID.<br>YOUR CAMPUSCODE.
+              </h3>
+              <p style="font-size: 12.5px; color: #555; line-height: 1.5; margin-bottom: 18px;">
+                The QR code is generated from the real public profile URL using the CampusCode ID returned by your backend. No placeholder QR pattern is used.
+              </p>
+
+              <!-- Backend Status Bar -->
+              <div style="background: #f7fee7; border: 1px solid #d9f99d; border-radius: 4px; padding: 7px 10px; display: flex; align-items: center; gap: 6px; margin-bottom: 22px;">
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #65a30d; display: inline-block;"></span>
+                <span style="font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 800; color: #3f6212; letter-spacing: 0.5px;">BACKEND PROFILE LOADED</span>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <button type="button" style="background: none; border: none; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 800; color: #111; cursor: pointer;" onclick="window.print()">
+                  PRINT / SAVE
+                </button>
+                <button type="button" class="btn-copy-verify" onclick="handleCopyProfileLink()">
+                  <span>COPY PROFILE LINK</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 7: RULEBOT AI (EXACT 1:1 TO SCREENSHOT 2)
+             ==================================================== -->
+        <section id="tab-rulebot-ai" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">CAMPUSCODE INTELLIGENCE / RULEBOT</span>
+              <h1 class="view-title">RULEBOT AI.</h1>
+              <p class="view-desc">Ask questions against the selected hackathon's organizer-uploaded rulebook.</p>
+            </div>
+          </div>
+
+          <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 10px; min-height: 480px; display: flex; flex-direction: column; overflow: hidden;">
+            <!-- Top Control Bar -->
+            <div style="padding: 18px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 32px; height: 32px; border-radius: 6px; background: #eef2ff; color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 15px;">
+                  ✦
+                </div>
+                <div>
+                  <strong style="font-size: 13.5px; font-weight: 900; letter-spacing: 0.5px; color: #111; display: block;">RULEBOT</strong>
+                  <small id="rulebot-status-tag" style="font-family: 'DM Mono', monospace; font-size: 9px; color: #858580; letter-spacing: 0.8px; display: block;">RULEBOOK NOT AVAILABLE</small>
+                </div>
+              </div>
+              <div>
+                <select class="hackmate-select" id="rulebot-hackathon-select" onchange="handleRulebotHackathonSelect(this.value)">
+                  <option value="">Choose a registered hackathon</option>
+                  <option value="rebuild">ReBuild '26</option>
+                  <option value="firstcommit">FirstCommit '26 Quiz Competition</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Centered Empty State (Screenshot 2 exact match) -->
+            <div id="rulebot-empty-view" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px;">
+              <h4 style="font-size: 13.5px; font-weight: 800; letter-spacing: 0.5px; color: #111; text-transform: uppercase; margin-bottom: 6px;">SELECT A HACKATHON</h4>
+              <p style="font-size: 12.5px; color: #888; max-width: 480px; line-height: 1.5;">
+                RuleBot needs a specific hackathon because its answers are grounded in that event's rulebook.
+              </p>
+            </div>
+
+            <!-- Interactive Chat View (Loaded when hackathon is selected) -->
+            <div id="rulebot-chat-view" style="display: none; flex-direction: column; flex: 1; height: 420px;">
+              <div id="rulebot-chat-messages" style="flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
+                <div style="background: #fafaf7; border: 1px solid var(--border); padding: 12px 16px; border-radius: 8px; width: fit-content; max-width: 80%; font-size: 13px; line-height: 1.5;">
+                  Rulebook loaded for <strong>ReBuild '26</strong> (12 sections indexed). Ask any question about evaluation rubrics, submission deadlines, plagiarism thresholds, or team policies.
+                </div>
+              </div>
+              <!-- Prompt suggestion pills -->
+              <div style="padding: 8px 16px; background: #fafaf7; border-top: 1px solid #f0f0ec; display: flex; gap: 6px; overflow-x: auto;">
+                <button type="button" class="btn-copy-verify" style="font-size: 10px; padding: 4px 10px;" onclick="quickRulebotAsk('What is the deadline for Round 1 submission?')">Round 1 deadline?</button>
+                <button type="button" class="btn-copy-verify" style="font-size: 10px; padding: 4px 10px;" onclick="quickRulebotAsk('Can I participate as an individual?')">Individual participation?</button>
+                <button type="button" class="btn-copy-verify" style="font-size: 10px; padding: 4px 10px;" onclick="quickRulebotAsk('Are pre-built templates permitted?')">Templates allowed?</button>
+              </div>
+              <div style="padding: 12px 18px; border-top: 1px solid var(--border); display: flex; gap: 10px;">
+                <input type="text" id="rulebot-input-field" placeholder="Ask a question against the ReBuild '26 rulebook..." style="flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; outline: none;" onkeydown="if(event.key==='Enter') sendActiveRulebotMsg()">
+                <button type="button" class="btn-register-dark" onclick="sendActiveRulebotMsg()">Ask RuleBot ↗</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 8: STUDENT GUIDE (EXACT 1:1 TO SCREENSHOT 3)
+             ==================================================== -->
+        <section id="tab-student-guide" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">HELP / CAMPUSCODE GUIDE</span>
+              <h1 class="view-title">STUDENT GUIDE.</h1>
+              <p class="view-desc">Everything you need to navigate CampusCode, from joining a hackathon to completing your final round.</p>
+            </div>
+          </div>
+
+          <!-- Playbook Banner -->
+          <div style="background: linear-gradient(135deg, #fafaf7 0%, #f3f4f6 100%); border: 1px solid var(--border); border-radius: 12px; padding: 22px 28px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <div>
+              <span style="font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 700; color: var(--lime-dark); letter-spacing: 1px;">YOUR PLAYBOOK</span>
+              <h2 style="font-size: 22px; font-weight: 900; margin: 4px 0; color: #111;">JOIN. BUILD. SUBMIT. ADVANCE.</h2>
+              <p style="font-size: 12.5px; color: #666; margin: 0;">Follow the journey in order. Your dashboard and round pages will tell you what is currently available.</p>
+            </div>
+            <div class="brand-mark" style="transform: scale(1.6); margin-right: 12px;">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+
+          <!-- 7 Playbook Step Cards Grid -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 14px;">
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+              <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 10px;">01</span>
+              <strong style="display: block; font-size: 13px; font-weight: 800; color: #111; margin-bottom: 4px;">GET STARTED</strong>
+              <p style="font-size: 11.5px; color: #666; line-height: 1.45; margin: 0;">Use your Dashboard to see your current activity, notifications and available hackathons.</p>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+              <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 10px;">02</span>
+              <strong style="display: block; font-size: 13px; font-weight: 800; color: #111; margin-bottom: 4px;">JOIN A HACKATHON</strong>
+              <p style="font-size: 11.5px; color: #666; line-height: 1.45; margin: 0;">Open Hackathons, review the event information and use JOIN HACKATHON when you are eligible.</p>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+              <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 10px;">03</span>
+              <strong style="display: block; font-size: 13px; font-weight: 800; color: #111; margin-bottom: 4px;">BUILD YOUR TEAM</strong>
+              <p style="font-size: 11.5px; color: #666; line-height: 1.45; margin: 0;">After joining, open My Team to create a team or use HackMate AI to discover compatible participants.</p>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+              <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 10px;">04</span>
+              <strong style="display: block; font-size: 13px; font-weight: 800; color: #111; margin-bottom: 4px;">SUBMIT YOUR IDEA</strong>
+              <p style="font-size: 11.5px; color: #666; line-height: 1.45; margin: 0;">When Round 1 is live, your team submits its problem statement. A Participant Agreement appears before the official submission.</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px;">
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+              <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 10px;">05</span>
+              <strong style="display: block; font-size: 13px; font-weight: 800; color: #111; margin-bottom: 4px;">ROUND 1 — ROUND 3</strong>
+              <p style="font-size: 11.5px; color: #666; line-height: 1.45; margin: 0;">Watch the round status in each workspace. A later round can remain locked until the organizer workflow opens it for your team.</p>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+              <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 10px;">06</span>
+              <strong style="display: block; font-size: 13px; font-weight: 800; color: #111; margin-bottom: 4px;">CHECK RESULTS</strong>
+              <p style="font-size: 11.5px; color: #666; line-height: 1.45; margin: 0;">Use Results and Leaderboard to view published outcomes, scores and available organizer feedback.</p>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 18px;">
+              <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 10px;">07</span>
+              <strong style="display: block; font-size: 13px; font-weight: 800; color: #111; margin-bottom: 4px;">USE AI RESPONSIBLY</strong>
+              <p style="font-size: 11.5px; color: #666; line-height: 1.45; margin: 0;">IdeaCheck helps you review an idea. RuleBot helps with hackathon rules. Always treat the organizer's official instructions as authoritative.</p>
+            </div>
+          </div>
+
+          <!-- DO THIS vs AVOID THIS (2 Columns) -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+            <!-- DO THIS -->
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 24px;">
+              <span style="font-family: 'DM Mono'; font-size: 9.5px; font-weight: 800; color: var(--lime-dark); letter-spacing: 1px;">DO THIS</span>
+              <h3 style="font-size: 18px; font-weight: 900; color: #111; margin: 2px 0 16px 0;">WHAT TO DO</h3>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 12.5px; color: #333;">
+                <li style="display: flex; gap: 8px;"><span style="color: var(--lime-dark); font-weight: 900;">✓</span> Read the hackathon details before joining.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: var(--lime-dark); font-weight: 900;">✓</span> Create or join the correct team for the hackathon.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: var(--lime-dark); font-weight: 900;">✓</span> Check your round status before preparing a submission.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: var(--lime-dark); font-weight: 900;">✓</span> Keep your project information accurate and consistent.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: var(--lime-dark); font-weight: 900;">✓</span> Read official announcements and deadlines.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: var(--lime-dark); font-weight: 900;">✓</span> Use IdeaCheck and RuleBot as supporting tools.</li>
+              </ul>
+            </div>
+
+            <!-- AVOID THIS -->
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 24px;">
+              <span style="font-family: 'DM Mono'; font-size: 9.5px; font-weight: 800; color: #ef4444; letter-spacing: 1px;">AVOID THIS</span>
+              <h3 style="font-size: 18px; font-weight: 900; color: #111; margin: 2px 0 16px 0;">WHAT NOT TO DO</h3>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 12.5px; color: #333;">
+                <li style="display: flex; gap: 8px;"><span style="color: #ef4444; font-weight: 900;">×</span> Do not submit copied or unauthorized work.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: #ef4444; font-weight: 900;">×</span> Do not share account credentials with other people.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: #ef4444; font-weight: 900;">×</span> Do not wait until the last moment to check a round.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: #ef4444; font-weight: 900;">×</span> Do not treat AI output as an official organizer decision.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: #ef4444; font-weight: 900;">×</span> Do not ignore organizer announcements.</li>
+                <li style="display: flex; gap: 8px;"><span style="color: #ef4444; font-weight: 900;">×</span> Do not submit to the wrong hackathon or team.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- COMMON QUESTIONS (FAQ ACCORDION) -->
+          <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <div>
+                <span style="font-family: 'DM Mono'; font-size: 9.5px; font-weight: 800; color: var(--text-muted); letter-spacing: 1px;">FAQ</span>
+                <h3 style="font-size: 18px; font-weight: 900; color: #111; margin-top: 2px;">COMMON QUESTIONS</h3>
+              </div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+            </div>
+
+            <!-- FAQ List -->
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <!-- Item 1 (Open by default matching screenshot) -->
+              <div style="border-bottom: 1px solid #f0f0ec; padding-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleFaq('faq-ans-1', 'faq-icon-1')">
+                  <strong style="font-size: 13px; color: #111;">Can I submit Round 1 without a team?</strong>
+                  <span id="faq-icon-1" style="width: 20px; height: 20px; border-radius: 50%; background: #eff6ff; color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900;">−</span>
+                </div>
+                <div id="faq-ans-1" style="font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5;">
+                  No. The current StudentPanel requires you to be part of a team before Round 1 submission.
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div style="border-bottom: 1px solid #f0f0ec; padding-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleFaq('faq-ans-2', 'faq-icon-2')">
+                  <strong style="font-size: 13px; color: #111;">Why is my round locked?</strong>
+                  <span id="faq-icon-2" style="width: 20px; height: 20px; border-radius: 50%; background: #eff6ff; color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900;">+</span>
+                </div>
+                <div id="faq-ans-2" style="display: none; font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5;">
+                  Rounds unlock automatically once the previous round is evaluated by jury mentors or when the scheduled round start time is reached.
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div style="border-bottom: 1px solid #f0f0ec; padding-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleFaq('faq-ans-3', 'faq-icon-3')">
+                  <strong style="font-size: 13px; color: #111;">Where should I look for official communication?</strong>
+                  <span id="faq-icon-3" style="width: 20px; height: 20px; border-radius: 50%; background: #eff6ff; color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900;">+</span>
+                </div>
+                <div id="faq-ans-3" style="display: none; font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5;">
+                  Follow the "Official Communication" tab in your Student Workspace and join the official WhatsApp channel for critical deadline alerts.
+                </div>
+              </div>
+
+              <!-- Item 4 -->
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleFaq('faq-ans-4', 'faq-icon-4')">
+                  <strong style="font-size: 13px; color: #111;">Can RuleBot replace organizer instructions?</strong>
+                  <span id="faq-icon-4" style="width: 20px; height: 20px; border-radius: 50%; background: #eff6ff; color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900;">+</span>
+                </div>
+                <div id="faq-ans-4" style="display: none; font-size: 12px; color: #666; margin-top: 8px; line-height: 1.5;">
+                  No. RuleBot helps guide you through common questions, but direct announcements from organizers and jury members always take absolute precedence.
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 9: OFFICIAL COMMUNICATION (EXACT 1:1 TO SCREENSHOT 4)
+             ==================================================== -->
+        <section id="tab-official-communication" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">COMMUNICATION / OFFICIAL</span>
+              <h1 class="view-title">OFFICIAL COMMUNICATION.</h1>
+              <p class="view-desc">Use the official CampusCode channel for important announcements and communication.</p>
+            </div>
+          </div>
+
+          <!-- Dark Alert Banner -->
+          <div id="official-notice-banner" style="background: #111; color: #fff; border-radius: 8px; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lime)" stroke-width="2.5"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+              <strong style="font-size: 13px; color: #fff;">New announcement</strong>
+              <span style="font-size: 12px; color: #bbb; margin-left: 4px;">Follow the official CampusCode WhatsApp channel for hackathon updates, announcements and deadlines.</span>
+            </div>
+            <button type="button" style="background: none; border: none; color: #888; font-size: 14px; cursor: pointer; padding: 4px;" onclick="document.getElementById('official-notice-banner').style.display='none'">✕</button>
+          </div>
+
+          <!-- Big Channel Card -->
+          <div style="background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 32px; display: flex; align-items: center; gap: 28px; margin-bottom: 24px;">
+            <!-- Purple Broadcast Icon -->
+            <div style="width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25); flex-shrink: 0;">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg>
+            </div>
+            <div>
+              <span style="font-family: 'DM Mono', monospace; font-size: 9.5px; font-weight: 800; color: var(--lime-dark); letter-spacing: 1px; display: block;">CAMPUSCODE OFFICIAL CHANNEL</span>
+              <h2 style="font-size: 24px; font-weight: 900; color: #111; margin: 4px 0 6px 0;">Stay connected.</h2>
+              <p style="font-size: 13px; color: #555; margin-bottom: 16px;">
+                Follow the official WhatsApp channel for hackathon updates, announcements, deadlines and important communication.
+              </p>
+              <button type="button" class="btn-open-journey" onclick="showToast('Redirecting to official WhatsApp channel...')">
+                <span>OPEN WHATSAPP CHANNEL</span>
+                <b>↗</b>
+              </button>
+            </div>
+          </div>
+
+          <!-- Bottom 2 Cards Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 22px;">
+              <span style="font-family: 'DM Mono'; font-size: 9.5px; font-weight: 800; color: var(--lime-dark); letter-spacing: 1px;">IMPORTANT</span>
+              <h4 style="font-size: 16px; font-weight: 900; color: #111; margin: 4px 0 8px 0;">Check official updates first.</h4>
+              <p style="font-size: 12.5px; color: #555; line-height: 1.5; margin: 0;">
+                When a deadline, round instruction or organizer decision changes, rely on the official communication shared by CampusCode and your hackathon organizer.
+              </p>
+            </div>
+
+            <div style="background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 22px;">
+              <span style="font-family: 'DM Mono'; font-size: 9.5px; font-weight: 800; color: var(--lime-dark); letter-spacing: 1px;">QUICK ACCESS</span>
+              <h4 style="font-size: 16px; font-weight: 900; color: #111; margin: 4px 0 8px 0;">Keep this channel easy to find.</h4>
+              <p style="font-size: 12.5px; color: #555; line-height: 1.5; margin: 0;">
+                Save or follow the channel so you can quickly return to official announcements when you are working on a submission.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 10: NOTIFICATIONS (EXACT 1:1 TO SCREENSHOT 5)
+             ==================================================== -->
+        <section id="tab-notifications" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">ALERTS / BACKEND DATA</span>
+              <h1 class="view-title">NOTIFICATIONS.</h1>
+              <p class="view-desc">Only unread notifications are shown by default. Mark them read as you go.</p>
+            </div>
+            <div class="live-data-counter">
+              <span class="live-data-number" id="notif-counter">01</span>
+              <span class="live-data-label">LIVE DATA</span>
+            </div>
+          </div>
+
+          <!-- Filter & Action Controls -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="background: #f0f0ec; border-radius: 30px; padding: 3px; display: inline-flex; align-items: center; gap: 2px;">
+              <button type="button" id="notif-filter-unread" style="border: none; background: #111; color: #fff; font-family: 'DM Mono'; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px;" onclick="filterNotifs('unread', this)">
+                <span>UNREAD</span>
+                <span id="unread-pill-count" style="background: var(--lime); color: #111; border-radius: 50%; padding: 1px 6px; font-size: 9px; font-weight: 900;">1</span>
+              </button>
+              <button type="button" id="notif-filter-all" style="border: none; background: transparent; color: #666; font-family: 'DM Mono'; font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 6px;" onclick="filterNotifs('all', this)">
+                <span>ALL</span>
+                <span style="background: #deded8; color: #444; border-radius: 50%; padding: 1px 6px; font-size: 9px; font-weight: 800;">2</span>
+              </button>
+            </div>
+
+            <button type="button" class="btn-register-dark" onclick="markAllNotifsRead()">
+              <span>MARK ALL AS READ</span>
+              <b>✓</b>
+            </button>
+          </div>
+
+          <!-- Notification Items List -->
+          <div id="notifications-list" style="display: flex; flex-direction: column; gap: 12px;">
+            <!-- Notification Item 1 (Exact match to screenshot 5) -->
+            <div id="notif-item-1" style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.02);" data-unread="true">
+              <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <span id="notif-dot-1" style="width: 7px; height: 7px; border-radius: 50%; background: var(--lime); display: inline-block; margin-top: 5px; flex-shrink: 0;"></span>
+                <div>
+                  <strong style="font-size: 14px; color: #111; display: block;">Create your team</strong>
+                  <p style="font-size: 12px; color: #555; margin-top: 4px; line-height: 1.45;">
+                    hello guys when you join the event using invite code you need to create a team . to create team go to hackmate ai select rebuild hackthon then create your team name
+                  </p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 14px; flex-shrink: 0;">
+                <span style="font-family: 'DM Mono'; font-size: 10px; color: #888;">Nov 05, 2026</span>
+                <button type="button" id="notif-btn-1" class="btn-view-details" style="font-family: 'DM Mono'; font-size: 10px; font-weight: 700; padding: 6px 12px;" onclick="markSingleNotifRead(1)">
+                  MARK AS READ
+                </button>
+              </div>
+            </div>
+
+            <!-- Notification Item 2 (Read state for 'ALL') -->
+            <div id="notif-item-2" style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 24px; display: none; align-items: center; justify-content: space-between; gap: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.02);" data-unread="false">
+              <div style="display: flex; align-items: flex-start; gap: 12px;">
+                <span style="width: 7px; height: 7px; border-radius: 50%; background: #ccc; display: inline-block; margin-top: 5px; flex-shrink: 0;"></span>
+                <div>
+                  <strong style="font-size: 14px; color: #111; display: block;">FirstCommit '26 Quiz Verified</strong>
+                  <p style="font-size: 12px; color: #555; margin-top: 4px; line-height: 1.45;">
+                    Your certificate CC-CERT-KDGS73EC has been issued and stamped on the CampusCode verification ledger.
+                  </p>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 14px; flex-shrink: 0;">
+                <span style="font-family: 'DM Mono'; font-size: 10px; color: #888;">Nov 03, 2026</span>
+                <span style="font-family: 'DM Mono'; font-size: 10px; color: #888; padding: 6px 12px;">READ ✓</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 11: HELP & SUPPORT (EXACT 1:1 TO SCREENSHOT 1)
+             ==================================================== -->
+        <section id="tab-help-support" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">HELP / SUPPORT</span>
+              <h1 class="view-title">HELP & SUPPORT.</h1>
+              <p class="view-desc">Start with the guide and FAQs. If you still need help, use the official communication channel or contact your organizer.</p>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+            <!-- CARD 01: Student Guide -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 26px 24px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; display: inline-block; margin-bottom: 14px;">01</span>
+                <h3 style="font-size: 18px; font-weight: 800; color: #111; margin-bottom: 6px;">Student Guide</h3>
+                <p style="font-size: 12.5px; color: #666; line-height: 1.5; margin: 0;">Learn how the CampusCode workflow works from joining a hackathon through results.</p>
+              </div>
+              <div>
+                <button type="button" class="btn-view-details" style="width: fit-content; padding: 8px 16px; margin-top: 20px;" onclick="switchTab('student-guide')">
+                  <span>OPEN GUIDE</span>
+                  <b>→</b>
+                </button>
+              </div>
+            </div>
+
+            <!-- CARD 02: FAQs -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 26px 24px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; display: inline-block; margin-bottom: 14px;">02</span>
+                <h3 style="font-size: 18px; font-weight: 800; color: #111; margin-bottom: 6px;">FAQs</h3>
+                <p style="font-size: 12.5px; color: #666; line-height: 1.5; margin: 0;">Find answers about teams, rounds, submissions, AI assistance and communication.</p>
+              </div>
+              <div>
+                <button type="button" class="btn-view-details" style="width: fit-content; padding: 8px 16px; margin-top: 20px;" onclick="switchTab('student-guide'); setTimeout(() => { window.scrollTo({top: 800, behavior: 'smooth'}); }, 100);">
+                  <span>VIEW FAQ</span>
+                  <b>→</b>
+                </button>
+              </div>
+            </div>
+
+            <!-- CARD 03: Official WhatsApp -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 26px 24px; min-height: 220px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span style="background: #eff6ff; color: #6366f1; font-family: 'DM Mono'; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 4px; display: inline-block; margin-bottom: 14px;">03</span>
+                <h3 style="font-size: 18px; font-weight: 800; color: #111; margin-bottom: 6px;">Official WhatsApp</h3>
+                <p style="font-size: 12.5px; color: #666; line-height: 1.5; margin: 0;">Follow the official CampusCode channel for announcements and important updates.</p>
+              </div>
+              <div>
+                <button type="button" class="btn-view-details" style="width: fit-content; padding: 8px 16px; margin-top: 20px;" onclick="switchTab('official-communication')">
+                  <span>OPEN CHANNEL</span>
+                  <b>→</b>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ====================================================
+             VIEW 12: YOUR PROFILE (EXACT 1:1 TO SCREENSHOT 2)
+             ==================================================== -->
+        <section id="tab-profile" class="tab-view">
+          <div class="view-header">
+            <div>
+              <span class="view-sub-tag">ACCOUNT / BACKEND PROFILE</span>
+              <h1 class="view-title">YOUR PROFILE.</h1>
+              <p class="view-desc">Edit your student profile and save the changes directly to the CampusCode backend.</p>
+            </div>
+          </div>
+
+          <!-- 2 Columns x 3 Rows Grid -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+            <!-- Box 1: NAME -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px;">
+              <small style="font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; color: #858580; letter-spacing: 0.8px; display: block; margin-bottom: 6px; text-transform: uppercase;">NAME</small>
+              <strong id="profile-name-val" style="font-size: 14px; font-weight: 800; color: #111; display: block;">Piyush sen</strong>
+            </div>
+
+            <!-- Box 2: EMAIL -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px;">
+              <small style="font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; color: #858580; letter-spacing: 0.8px; display: block; margin-bottom: 6px; text-transform: uppercase;">EMAIL</small>
+              <strong id="profile-email-val" style="font-size: 14px; font-weight: 800; color: #111; display: block;">piyush.sencse2025@indoreinstitute.com</strong>
+            </div>
+
+            <!-- Box 3: ROLE -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px;">
+              <small style="font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; color: #858580; letter-spacing: 0.8px; display: block; margin-bottom: 6px; text-transform: uppercase;">ROLE</small>
+              <strong style="font-size: 14px; font-weight: 800; color: #111; display: block;">STUDENT</strong>
+            </div>
+
+            <!-- Box 4: CAMPUSCODE ID -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px;">
+              <small style="font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; color: #858580; letter-spacing: 0.8px; display: block; margin-bottom: 6px; text-transform: uppercase;">CAMPUSCODE ID</small>
+              <strong style="font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 800; color: #111; display: block;">CC-ZZW4VY</strong>
+            </div>
+
+            <!-- Box 5: BIO -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px;">
+              <small style="font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; color: #858580; letter-spacing: 0.8px; display: block; margin-bottom: 6px; text-transform: uppercase;">BIO</small>
+              <strong id="profile-bio-val" style="font-size: 14px; font-weight: 800; color: #111; display: block;">—</strong>
+            </div>
+
+            <!-- Box 6: SKILLS -->
+            <div style="background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 18px 22px;">
+              <small style="font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700; color: #858580; letter-spacing: 0.8px; display: block; margin-bottom: 6px; text-transform: uppercase;">SKILLS</small>
+              <strong id="profile-skills-val" style="font-size: 13px; font-weight: 700; color: #111; display: block; line-height: 1.4;">React, Node.js, MongoDB, Express.js, HTML, CSS, JavaScript</strong>
+            </div>
+          </div>
+
+          <!-- EDIT PROFILE Button -->
+          <div>
+            <button type="button" class="btn-view-details" style="font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 800; padding: 10px 18px; border-radius: 6px; gap: 6px;" onclick="openProfileEditModal()">
+              <span>EDIT PROFILE</span>
+              <b>↗</b>
+            </button>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- PROFILE EDIT MODAL (CENTERED FIXED WITH BLUR BACKDROP) -->
+  <div id="profile-edit-modal" style="display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.45); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: #fff; border-radius: 12px; border: 1px solid var(--border); width: 100%; max-width: 520px; padding: 28px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <div>
+          <span style="font-size: 9.5px; font-family: 'DM Mono', monospace; color: var(--lime-dark); letter-spacing: 1.5px; font-weight: 700; text-transform: uppercase;">ACCOUNT / EDIT</span>
+          <h2 style="font-size: 20px; font-weight: 900; margin: 2px 0 0 0; color: #111;">EDIT PROFILE</h2>
+        </div>
+        <button type="button" onclick="closeProfileEditModal()" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #888; padding: 4px;">✕</button>
+      </div>
+
+      <form onsubmit="saveProfileChanges(event)">
+        <div style="margin-bottom: 14px;">
+          <label style="font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 700; color: #888; display: block; margin-bottom: 5px;">NAME</label>
+          <input type="text" id="modal-name-input" style="width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; outline: none; box-sizing: border-box;">
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 700; color: #888; display: block; margin-bottom: 5px;">BIO</label>
+          <textarea rows="3" id="modal-bio-input" placeholder="e.g. Frontend developer, competing in hackathons..." style="width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; outline: none; box-sizing: border-box; resize: vertical;"></textarea>
+        </div>
+
+        <div style="margin-bottom: 22px;">
+          <label style="font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 700; color: #888; display: block; margin-bottom: 5px;">SKILLS (COMMA-SEPARATED)</label>
+          <input type="text" id="modal-skills-input" style="width: 100%; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 13px; outline: none; box-sizing: border-box;">
+        </div>
+
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" onclick="closeProfileEditModal()" class="btn-copy-verify">CANCEL</button>
+          <button type="submit" class="btn-open-journey">SAVE CHANGES ↗</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FLOATING TOAST -->
+  <div class="toast-pill" id="global-toast">
+    <span id="toast-icon">✓</span>
+    <span id="toast-msg">Notification</span>
+  </div>
+
+  <!-- ====================================================
+       PURE VANILLA JAVASCRIPT LOGIC
+       ==================================================== -->
+  <script>
+    
+    const TAB_TITLES = {
+      'events': 'EVENTS',
+      'my-events': 'MY EVENTS',
+      'hackmate-ai': 'HACKMATE AI',
+      'ideacheck-ai': 'IDEACHECK AI',
+      'certificates': 'CERTIFICATES',
+      'overview': 'OVERVIEW',
+      'digital-card': 'DIGITAL CARD',
+      'rulebot-ai': 'RULEBOT AI',
+      'student-guide': 'STUDENT GUIDE',
+      'official-communication': 'OFFICIAL COMMUNICATION',
+      'notifications': 'NOTIFICATIONS',
+      'help-support': 'HELP & SUPPORT',
+      'profile': 'PROFILE'
+    };
+
+    
+    function switchTab(tabId) {
+     
+      document.querySelectorAll('.tab-view').forEach(view => {
+        view.classList.remove('active');
+      });
+
+      
+      document.querySelectorAll('.nav-item-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // 3. Activate target view
+      const targetView = document.getElementById('tab-' + tabId);
+      if (targetView) {
+        targetView.classList.add('active');
+      }
+
+      // 4. Activate corresponding sidebar button
+      const activeBtn = document.querySelector(`.nav-item-btn[data-tab="${tabId}"]`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      }
+
+      // 5. Update topbar title
+      const topTitle = document.getElementById('topbar-title');
+      if (topTitle && TAB_TITLES[tabId]) {
+        topTitle.innerText = TAB_TITLES[tabId];
+      }
+
+      // Smooth scroll to top of view
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Attach click listeners to all nav items
+    document.querySelectorAll('.nav-item-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const tab = button.getAttribute('data-tab');
+        if (tab) {
+          switchTab(tab);
+        }
+      });
+    });
+
+    // Events Page: Category Filter Pills
+    function filterEvents(category, btnElement) {
+      document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      const cards = document.querySelectorAll('.event-card');
+      cards.forEach(card => {
+        if (category === 'all') {
+          card.style.display = 'flex';
+        } else {
+          const cardCat = card.getAttribute('data-category');
+          card.style.display = (cardCat === category) ? 'flex' : 'none';
+        }
+      });
+    }
+
+    // HackMate Select Hackathon Handler
+    function handleHackmateSelect(val) {
+      const emptyState = document.getElementById('hackmate-empty-state');
+      const resultsState = document.getElementById('hackmate-results');
+      const countLabel = document.getElementById('hackmate-count');
+
+      if (val === 'rebuild' || val === 'firstcommit') {
+        emptyState.style.display = 'none';
+        resultsState.style.display = 'flex';
+        countLabel.innerText = '04';
+        showToast('Loaded active participants from ' + (val === 'rebuild' ? "ReBuild '26" : "FirstCommit '26"));
+      } else {
+        emptyState.style.display = 'flex';
+        resultsState.style.display = 'none';
+        countLabel.innerText = '00';
+      }
+    }
+
+    // IdeaCheck Live Character Counter
+    function handleIdeaInput(textarea) {
+      const counter = document.getElementById('char-counter');
+      if (counter) {
+        counter.innerText = textarea.value.length + ' / 5000';
+      }
+    }
+
+    // IdeaCheck Run Analysis Action
+    function runIdeaAnalysis() {
+      const input = document.getElementById('idea-input-box');
+      const text = input ? input.value.trim() : '';
+      const btnText = document.getElementById('idea-btn-text');
+      const reportBox = document.getElementById('idea-report-container');
+
+      if (!text) {
+        showToast('Please describe your project idea first!', 'info');
+        return;
+      }
+
+      btnText.innerText = 'CHECKING WITH AI...';
+
+      setTimeout(() => {
+        btnText.innerText = 'CHECK IDEA WITH AI';
+        reportBox.innerHTML = `
+          <div style="width: 100%; text-align: left; animation: fadeIn 0.3s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <span style="background: rgba(168, 230, 46, 0.15); color: #4d7c0f; font-family: 'DM Mono'; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 4px;">
+                HIGH NOVELTY & FEASIBILITY — 92% MATCH SCORE
+              </span>
+              <span style="font-family: 'DM Mono'; font-size: 11px; color: #888;">GEMINI REPORT #CC-2026</span>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 900; margin-bottom: 8px;">Analysis Verdict: Strong Hackathon Candidate</h3>
+            <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 16px;">
+              Your proposed system solves an active problem statement in the CampusCode directory. Its architecture is well-suited for a 48h MVP submission.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">
+              <div style="background: #fafaf7; border: 1px solid var(--border); padding: 12px; border-radius: 6px;">
+                <small style="font-family: 'DM Mono'; font-size: 9px; color: #888;">DATASET SIMILARITY</small>
+                <strong style="font-size: 16px; color: #111; display: block;">14% Overlap</strong>
+              </div>
+              <div style="background: #fafaf7; border: 1px solid var(--border); padding: 12px; border-radius: 6px;">
+                <small style="font-family: 'DM Mono'; font-size: 9px; color: #888;">INNOVATION</small>
+                <strong style="font-size: 16px; color: #82b91a; display: block;">94 / 100</strong>
+              </div>
+              <div style="background: #fafaf7; border: 1px solid var(--border); padding: 12px; border-radius: 6px;">
+                <small style="font-family: 'DM Mono'; font-size: 9px; color: #888;">MVP VIABILITY</small>
+                <strong style="font-size: 16px; color: #6366f1; display: block;">HIGH</strong>
+              </div>
+            </div>
+            <button type="button" class="btn-open-journey" onclick="showToast('Idea approved for Round 1 submission!')">
+              Save to Workspace Submissions ↗
+            </button>
+          </div>
+        `;
+        showToast('Gemini AI evaluation completed!');
+      }, 1000);
+    }
+
+    // Certificates Actions
+    function handleDownloadCert() {
+      showToast('Downloading verified certificate CC-CERT-KDGS73EC.pdf...');
+    }
+
+    function handleCopyVerifyLink() {
+      const verifyUrl = window.location.origin + '/verify/CC-CERT-KDGS73EC';
+      navigator.clipboard.writeText(verifyUrl).then(() => {
+        showToast('Verification link copied to clipboard!');
+      }).catch(() => {
+        showToast('Link: ' + verifyUrl);
+      });
+    }
+
+    // Digital Card: Copy profile link
+    function handleCopyProfileLink() {
+      const url = window.location.origin + '/student?id=CC-ZZW4VY';
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('Public profile link copied to clipboard!');
+      }).catch(() => {
+        showToast('Profile link: ' + url);
+      });
+    }
+
+    // RuleBot Hackathon Selector
+    function handleRulebotHackathonSelect(val) {
+      const emptyView = document.getElementById('rulebot-empty-view');
+      const chatView = document.getElementById('rulebot-chat-view');
+      const tag = document.getElementById('rulebot-status-tag');
+
+      if (val === 'rebuild' || val === 'firstcommit') {
+        emptyView.style.display = 'none';
+        chatView.style.display = 'flex';
+        tag.innerText = val === 'rebuild' ? 'RULEBOOK LOADED: REBUILD 26' : 'RULEBOOK LOADED: FIRSTCOMMIT 26';
+        tag.style.color = 'var(--lime-dark)';
+        showToast('Loaded rulebook for ' + (val === 'rebuild' ? "ReBuild '26" : "FirstCommit '26"));
+      } else {
+        emptyView.style.display = 'flex';
+        chatView.style.display = 'none';
+        tag.innerText = 'RULEBOOK NOT AVAILABLE';
+        tag.style.color = '#858580';
+      }
+    }
+
+    function quickRulebotAsk(q) {
+      const field = document.getElementById('rulebot-input-field');
+      if (field) {
+        field.value = q;
+        sendActiveRulebotMsg();
+      }
+    }
+
+    function sendActiveRulebotMsg() {
+      const field = document.getElementById('rulebot-input-field');
+      const text = field ? field.value.trim() : '';
+      if (!text) return;
+
+      const container = document.getElementById('rulebot-chat-messages');
+      container.innerHTML += `
+        <div style="background: #111; color: #fff; padding: 10px 14px; border-radius: 8px; width: fit-content; max-width: 80%; align-self: flex-end; font-size: 13px;">
+          ${text}
+        </div>
+      `;
+      field.value = '';
+
+      setTimeout(() => {
+        let reply = "All submissions must be original work created during the hackathon timeline. Pre-existing open source libraries are allowed, but the core implementation must be newly authored.";
+        const lower = text.toLowerCase();
+        if (lower.includes('deadline') || lower.includes('round 1')) {
+          reply = "Round 1 (Friday, 6 Nov): Recreate the CampusCode user flow faithfully (Dashboard, Login, Register, and Student dashboard) and submit your demo link any time till 10 PM IST.";
+        } else if (lower.includes('individual') || lower.includes('solo') || lower.includes('team')) {
+          reply = "You participate alone in ReBuild '26, but you must create a team name for tracking and use it on your Unstop registration and portal submission.";
+        } else if (lower.includes('template') || lower.includes('ai')) {
+          reply = "Building in CampusCode's vibe is required. Frontend only, mock data is completely fine. No presentation round.";
+        }
+        container.innerHTML += `
+          <div style="background: #fafaf7; border: 1px solid var(--border); padding: 12px 16px; border-radius: 8px; width: fit-content; max-width: 80%; font-size: 13px; line-height: 1.5;">
+            ${reply}
+          </div>
+        `;
+        container.scrollTop = container.scrollHeight;
+      }, 500);
+    }
+
+    // Student Guide Accordion FAQ
+    function toggleFaq(ansId, iconId) {
+      const ans = document.getElementById(ansId);
+      const icon = document.getElementById(iconId);
+      if (ans) {
+        const isOpen = ans.style.display !== 'none';
+        ans.style.display = isOpen ? 'none' : 'block';
+        if (icon) {
+          icon.innerText = isOpen ? '+' : '−';
+        }
+      }
+    }
+
+   
+    function filterNotifs(type, btn) {
+      document.getElementById('notif-filter-unread').style.background = 'transparent';
+      document.getElementById('notif-filter-unread').style.color = '#666';
+      document.getElementById('notif-filter-all').style.background = 'transparent';
+      document.getElementById('notif-filter-all').style.color = '#666';
+
+      btn.style.background = '#111';
+      btn.style.color = '#fff';
+
+      const item1 = document.getElementById('notif-item-1');
+      const item2 = document.getElementById('notif-item-2');
+
+      if (type === 'unread') {
+        if (item1 && item1.getAttribute('data-unread') === 'true') item1.style.display = 'flex';
+        if (item2) item2.style.display = 'none';
+      } else {
+        if (item1) item1.style.display = 'flex';
+        if (item2) item2.style.display = 'flex';
+      }
+    }
+
+    function markAllNotifsRead() {
+      const item1 = document.getElementById('notif-item-1');
+      const dot1 = document.getElementById('notif-dot-1');
+      const btn1 = document.getElementById('notif-btn-1');
+      const unreadBadge = document.getElementById('unread-pill-count');
+      const counter = document.getElementById('notif-counter');
+
+      if (item1) item1.setAttribute('data-unread', 'false');
+      if (dot1) dot1.style.background = '#ccc';
+      if (btn1) {
+        btn1.innerText = 'READ ✓';
+        btn1.style.pointerEvents = 'none';
+        btn1.style.color = '#888';
+      }
+      if (unreadBadge) unreadBadge.innerText = '0';
+      if (counter) counter.innerText = '00';
+
+      const bellBadge = document.querySelector('.bell-badge');
+      if (bellBadge) bellBadge.style.display = 'none';
+
+      showToast('All notifications marked as read!');
+    }
+
+    function markSingleNotifRead(id) {
+      const dot = document.getElementById('notif-dot-' + id);
+      const btn = document.getElementById('notif-btn-' + id);
+      const item = document.getElementById('notif-item-' + id);
+      const unreadBadge = document.getElementById('unread-pill-count');
+      const counter = document.getElementById('notif-counter');
+
+      if (dot) dot.style.background = '#ccc';
+      if (btn) {
+        btn.innerText = 'READ ✓';
+        btn.style.pointerEvents = 'none';
+        btn.style.color = '#888';
+      }
+      if (item) item.setAttribute('data-unread', 'false');
+      if (unreadBadge) unreadBadge.innerText = '0';
+      if (counter) counter.innerText = '00';
+
+      const bellBadge = document.querySelector('.bell-badge');
+      if (bellBadge) bellBadge.style.display = 'none';
+
+      showToast('Notification marked as read!');
+    }
+
+    // RuleBot  send message
+    function sendRulebotMsg() {
+      const input = document.getElementById('rulebot-input');
+      const text = input ? input.value.trim() : '';
+      if (!text) return;
+
+      const chat = document.getElementById('rulebot-chat');
+      chat.innerHTML += `
+        <div style="background: #111; color: #fff; padding: 8px 12px; border-radius: 8px; width: fit-content; max-width: 80%; align-self: flex-end; font-size: 12.5px;">
+          ${text}
+        </div>
+      `;
+      input.value = '';
+
+      setTimeout(() => {
+        let reply = "All submissions must be original work created during the hackathon timeline. Check the official guideline notice for exact round deadlines.";
+        const lower = text.toLowerCase();
+        if (lower.includes('round 1') || lower.includes('deadline')) {
+          reply = "Round 1 submissions close today, Friday 6 Nov at 10:00 PM IST. Submit your live demo link and dashboard code on the portal.";
+        } else if (lower.includes('team') || lower.includes('solo')) {
+          reply = "ReBuild '26 is an individual hackathon, but you must register a team name on Unstop and CampusCode for tracking.";
+        }
+        chat.innerHTML += `
+          <div style="background: #fff; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); width: fit-content; max-width: 80%; font-size: 12.5px;">
+            ${reply}
+          </div>
+        `;
+        chat.scrollTop = chat.scrollHeight;
+      }, 600);
+    }
+
+    // Edit Profile Mllodal
+    function openProfileEditModal() {
+      const modal = document.getElementById('profile-edit-modal');
+      const curName = document.getElementById('profile-name-val').innerText;
+      const curBio = document.getElementById('profile-bio-val').innerText;
+      const curSkills = document.getElementById('profile-skills-val').innerText;
+
+      document.getElementById('modal-name-input').value = curName;
+      document.getElementById('modal-bio-input').value = curBio === '—' ? '' : curBio;
+      document.getElementById('modal-skills-input').value = curSkills;
+
+      modal.style.display = 'flex';
+    }
+
+    function closeProfileEditModal() {
+      const modal = document.getElementById('profile-edit-modal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function saveProfileChanges(e) {
+      if (e) e.preventDefault();
+      const newName = document.getElementById('modal-name-input').value.trim() || 'Piyush sen';
+      const newBio = document.getElementById('modal-bio-input').value.trim() || '—';
+      const newSkills = document.getElementById('modal-skills-input').value.trim() || 'React, Node.js, MongoDB, Express.js, HTML, CSS, JavaScript';
+
+      document.getElementById('profile-name-val').innerText = newName;
+      document.getElementById('profile-bio-val').innerText = newBio;
+      document.getElementById('profile-skills-val').innerText = newSkills;
+
+      // Update Topbar ad Sidebar user name
+      const topName = document.querySelector('.topbar-user-name');
+      if (topName) topName.innerText = newName;
+
+      const sidebarName = document.querySelector('.user-info-text strong');
+      if (sidebarName) sidebarName.innerText = newName;
+
+      closeProfileEditModal();
+      showToast('Profile updated and saved to backend!');
+    }
+
+    // Refresh action
+    function handleRefresh() {
+      showToast('Refreshed live backend data');
+    }
+
+    // Logout acton
+    function handleLogout() {
+      showToast('Logged out successfully');
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 700);
+    }
+
+    // Global Toast Notification
+    let toastTimeout;
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('global-toast');
+      const msg = document.getElementById('toast-msg');
+      const icon = document.getElementById('toast-icon');
+
+      if (toast && msg) {
+        msg.innerText = message;
+        icon.innerText = type === 'info' ? 'ℹ' : '✓';
+        icon.style.color = type === 'info' ? '#60a5fa' : 'var(--lime)';
+
+        toast.classList.add('show');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2800);
+      }
+    }
+  </script>
+</body>
+</html>

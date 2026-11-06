@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f7f7f4">
+  <title>Register | CampusCode</title>
+  <link rel="stylesheet" href="../css/index.css">
+  <link rel="stylesheet" href="../css/register2.css">
+  <link rel="stylesheet" href="../css/register.css">
+  <script src="../js/register.js" defer></script>
+</head>
+<body>
+  <div class="campus-register">
+    <div class="register-grid" aria-hidden="true"></div>
+    <div class="register-glow register-glow-one" aria-hidden="true"></div>
+    <div class="register-glow register-glow-two" aria-hidden="true"></div>
+
+    <div class="register-network" aria-hidden="true">
+      <svg viewBox="0 0 1400 800" preserveAspectRatio="none">
+        <path d="M0 600 C180 450 250 620 420 430 S680 80 900 270 S1150 500 1400 180"></path>
+        <path d="M80 130 C280 300 380 80 570 270 S800 620 1080 500 S1250 400 1400 620"></path>
+        <path d="M250 800 C400 600 570 650 720 460 S970 180 1160 80"></path>
+        <circle cx="420" cy="430" r="4"></circle>
+        <circle cx="900" cy="270" r="4"></circle>
+        <circle cx="1080" cy="500" r="4"></circle>
+        <circle cx="570" cy="270" r="4"></circle>
+        <circle cx="1160" cy="80" r="4"></circle>
+      </svg>
+    </div>
+
+    <header class="register-nav">
+      <a href="../index.html" class="register-brand" aria-label="CampusCode home">
+        <span class="register-brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="register-brand-text">
+          <strong>CAMPUSCODE</strong>
+          <small>HACKATHON ARENA</small>
+        </span>
+      </a>
+      <a class="register-back" href="../index.html">← BACK TO HOME</a>
+    </header>
+
+    <main class="register-main">
+      <section class="register-intro">
+        <div class="register-status"><span></span>CAMPUSCODE / REGISTRATION</div>
+        <div class="register-intro-index"><span>CREATE</span><span>02 / 02</span></div>
+        <h1>JOIN<br>THE<br><span>ARENA.</span></h1>
+        <p class="register-intro-description">
+          Create your CampusCode identity and become part of a student
+          ecosystem designed around ideas, teams, technology and competition.
+        </p>
+
+        <div class="register-info-grid">
+          <div class="register-info-card register-info-card-main">
+            <div class="register-info-card-top"><span>01</span><span>IDENTITY</span></div>
+            <strong>CREATE</strong>
+            <p>Build your student profile and enter the CampusCode ecosystem.</p>
+            <div class="register-info-line"><i></i></div>
+          </div>
+          <div class="register-info-card">
+            <div class="register-info-card-top"><span>02</span><span>TEAM</span></div>
+            <strong>COLLABORATE</strong>
+            <p>Find teammates and build projects together.</p>
+          </div>
+          <div class="register-info-card">
+            <div class="register-info-card-top"><span>03</span><span>ARENA</span></div>
+            <strong>COMPETE</strong>
+            <p>Join hackathons and turn ideas into submissions.</p>
+          </div>
+        </div>
+
+        <div class="register-system-info">
+          <div><span class="register-system-dot"></span>REGISTRATION OPEN</div>
+          <div>STUDENT INNOVATION NETWORK</div>
+          <div>2026</div>
+        </div>
+      </section>
+
+      <section class="register-card-wrapper">
+        <div class="register-card">
+          <div class="register-card-top">
+            <div>
+              <span class="register-card-label">NEW ACCOUNT</span>
+              <h2>REGISTER</h2>
+              <p class="register-card-description" id="card-description">Create your CampusCode account.</p>
+            </div>
+            <div class="register-card-index">CC<br>02</div>
+          </div>
+          <div class="register-divider"></div>
+
+          <form id="details-form" novalidate>
+            <div class="register-field">
+              <label for="reg-name">FULL NAME</label>
+              <div class="register-input-wrap">
+                <span class="register-input-icon">◇</span>
+                <input id="reg-name" type="text" name="name" placeholder="Your full name" autocomplete="name" required autofocus>
+              </div>
+            </div>
+
+            <div class="register-field">
+              <label for="reg-email">EMAIL ADDRESS</label>
+              <div class="register-input-wrap">
+                <span class="register-input-icon">@</span>
+                <input id="reg-email" type="email" name="email" placeholder="you@university.edu" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="register-field">
+              <label for="reg-password">PASSWORD</label>
+              <div class="register-input-wrap">
+                <span class="register-input-icon">•</span>
+                <input id="reg-password" type="password" name="password" placeholder="Min 8 chars with letter & number" autocomplete="new-password" required>
+                <button type="button" class="login-password-toggle" id="password-toggle">SHOW</button>
+              </div>
+              <div class="register-strength" id="password-strength" hidden>
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <div class="register-field">
+              <label for="reg-confirm">CONFIRM PASSWORD</label>
+              <div class="register-input-wrap">
+                <span class="register-input-icon">•</span>
+                <input id="reg-confirm" type="password" name="confirmPassword" placeholder="Repeat your password" autocomplete="new-password" required>
+              </div>
+            </div>
+
+            <div class="register-age">
+              <input type="checkbox" id="reg-age">
+              <label for="reg-age">I confirm that I am 18 years of age or older.</label>
+            </div>
+
+            <div class="register-field">
+              <label for="captcha-input">VERIFICATION CODE</label>
+              <div class="login-captcha-row">
+                <span class="login-captcha-img" id="captcha-text"></span>
+                <button type="button" class="login-password-toggle" id="new-captcha">↻ NEW</button>
+              </div>
+              <div class="register-input-wrap register-captcha-input">
+                <input id="captcha-input" type="text" placeholder="Type the 5-letter code above" maxlength="5" required>
+              </div>
+            </div>
+
+            <div class="login-message login-error" id="form-error" role="alert" hidden></div>
+            <button type="submit" class="login-submit register-submit" id="continue-button">
+              <span>CONTINUE TO VERIFY</span><b>↗</b>
+            </button>
+          </form>
+
+          <form id="otp-form" hidden>
+            <div class="register-otp-note">
+              <p>Enter verification code sent to:</p>
+              <strong id="otp-email"></strong>
+              <div class="register-demo-code">Demo Test Code: <strong>849201</strong></div>
+            </div>
+            <div class="register-field">
+              <label for="reg-otp">6-DIGIT CODE</label>
+              <div class="register-input-wrap">
+                <span class="register-input-icon">#</span>
+                <input id="reg-otp" type="text" placeholder="849201" maxlength="6" inputmode="numeric" required>
+              </div>
+              <div class="register-otp-meta">
+                <span>Expires in: <strong id="otp-time">5:00</strong></span>
+                <button type="button" id="resend-code">Resend Code</button>
+              </div>
+            </div>
+            <div class="login-message login-error" id="otp-error" role="alert" hidden></div>
+            <div class="register-otp-actions">
+              <button type="button" id="back-button">← BACK</button>
+              <button type="submit" class="login-submit" id="finish-button"><span>FINISH REGISTRATION</span><b>↗</b></button>
+            </div>
+          </form>
+
+          <div class="login-card-footer">
+            <span>Already have an account?</span>
+            <a class="login-register" href="login.html">LOGIN HERE<span>↗</span></a>
+          </div>
+          <div class="register-feedback" id="register-feedback" role="status" hidden></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
