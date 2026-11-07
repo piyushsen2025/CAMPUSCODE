@@ -1253,6 +1253,95 @@
       transform: translateY(0);
       opacity: 1;
     }
+  
+
+/* REBUILD '26 — CAMPUSCODE EDITORIAL STUDENT DASHBOARD */
+:root {
+  --bg: #F2F0E9;
+  --surface: #fffefa;
+  --surface-soft: #e9e8df;
+  --text: #102D3B;
+  --text-muted: #71818A;
+  --border: rgba(8,48,72,.15);
+  --border-light: rgba(8,48,72,.1);
+  --lime: #B9F12F;
+  --lime-dark: #8ebc1c;
+  --lime-soft: rgba(185,241,47,.18);
+  --lime-text: #405b0c;
+  --purple: #083048;
+  --purple-dark: #062536;
+  --sidebar-width: 258px;
+  --topbar-height: 72px;
+}
+html, body { background: var(--bg); color: var(--text); }
+.app-layout { background: var(--bg); }
+.sidebar {
+  background: var(--cc-navy, #083048);
+  border-right: 1px solid rgba(242,240,233,.12);
+  color: #F2F0E9;
+  padding: 24px 16px 18px;
+}
+.brand-header { border-color: rgba(242,240,233,.16); color: #F2F0E9; padding: 4px 8px 20px; }
+.brand-mark span:nth-child(1) { background: #F2F0E9; }
+.brand-mark span:nth-child(2), .brand-mark span:nth-child(3) { background: #B9F12F; }
+.brand-text strong { color: #F2F0E9; letter-spacing: .06em; }
+.brand-text small { color: rgba(242,240,233,.56); }
+.nav-section-label { color: rgba(242,240,233,.45); letter-spacing: .2em; }
+.nav-item-btn { color: rgba(242,240,233,.72); border-radius: 9px; padding: 11px 12px; }
+.nav-item-btn:hover { color: #F2F0E9; background: rgba(242,240,233,.1); }
+.nav-item-btn.active { background: #B9F12F; color: #083048; font-weight: 800; box-shadow: 0 8px 22px rgba(185,241,47,.12); }
+.ai-badge { color: #B9F12F; background: rgba(185,241,47,.13); }
+.sidebar-bottom { border-color: rgba(242,240,233,.16); }
+.user-avatar-circle { color: #083048; background: #B9F12F; border: 0; }
+.user-info-text strong { color: #F2F0E9; }
+.user-info-text span, .sidebar-bottom small { color: rgba(242,240,233,.54); }
+.topbar {
+  min-height: var(--topbar-height);
+  background: rgba(242,240,233,.94);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 36px;
+  backdrop-filter: blur(14px);
+}
+.topbar-breadcrumb { color: #71818A; letter-spacing: .16em; }
+.topbar-title { color: #083048; font-family: "Space Grotesk", Inter, sans-serif; font-weight: 800; }
+.bell-btn, .refresh-btn, .topbar-user { color: #083048; background: #fffefa; border-color: var(--border); border-radius: 9px; }
+.bell-badge { color: #083048; background: #B9F12F; box-shadow: 0 0 0 3px rgba(185,241,47,.15); }
+.refresh-btn:hover, .bell-btn:hover { background: #B9F12F; border-color: #B9F12F; }
+.view-container { padding: 38px clamp(22px,4vw,58px) 64px; }
+.view-sub-tag { color: #688b1b; }
+.view-title { color: #083048; font-family: "Space Grotesk", Inter, sans-serif; letter-spacing: -.055em; }
+.view-desc { color: #71818A; }
+.live-data-number { color: #083048; }
+.live-data-label { color: #71818A; }
+.filter-pill { border: 1px solid transparent; color: #71818A; }
+.filter-pill:hover { color: #083048; background: rgba(8,48,72,.06); }
+.filter-pill.active { color: #083048; background: #B9F12F; }
+.event-card, .stat-card, .dashboard-card, .profile-card, .content-card {
+  border-color: var(--border);
+  border-radius: 14px;
+  background: #fffefa;
+  box-shadow: 0 8px 26px rgba(8,48,72,.045);
+}
+.event-card { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.event-card:hover { transform: translateY(-5px); border-color: rgba(8,48,72,.28); box-shadow: 0 18px 38px rgba(8,48,72,.1); }
+button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }
+button:active, a:active { transform: translateY(1px) scale(.985); }
+input:focus, select:focus, textarea:focus { outline-color: #8ebc1c; }
+@media (max-width: 900px) {
+  .topbar { padding: 13px 20px; }
+  .view-container { padding: 28px 22px 48px; }
+}
+@media (max-width: 600px) {
+  .sidebar { width: min(86vw, 290px); }
+  .topbar { gap: 12px; padding: 12px 14px; }
+  .topbar-user-name { display: none; }
+  .view-container { padding: 24px 16px 42px; }
+  .view-title { font-size: clamp(32px,10vw,44px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
   </style>
 </head>
 <body>
